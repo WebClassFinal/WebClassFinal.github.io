@@ -7,19 +7,10 @@ var firstRun = true;
 var create_listeners = function () {
     body = $('body');
     body.tap(function () {
-//        console.log("body tapped");
-//        if (isRunning) {
-//            ticker.pause();
-//            isRunning = false;
-//        } else {
-//            if (firstRun) {
-//                ticker.run();
-//                firstRun = false;
-//            } else {
-//                ticker.resume();
-//            }
-//            isRunning = true;
-//        }
+        if (crazy_mario.collidesWithArray(blocks)) {
+            crazy_mario.xv = jump_speed;
+            crazy_mario.applyXVelocity();
+        }
     });
 };
 
@@ -29,12 +20,14 @@ var init = function () {
     // load the images in parallel. When all the images are
     // ready, the callback function is called.
     scene.loadImages(['img/mario_8_bit.jpg','img/ground.png'], function() {
+        // define the walking movements of mario
         var positions = [];
         for (var i = 0; i < 20; i++) {
             positions.push([i * 21, 0, 5]);
         };
         cycle = scene.Cycle(positions);
-        // create the Sprite object;
+
+        // create mario and set movements
         crazy_mario = scene.Sprite('img/mario_8_bit.jpg');
         crazy_mario.size(21,46);
         cycle.addSprite(crazy_mario);
@@ -44,6 +37,7 @@ var init = function () {
         for (var i = 0; i < screen_h / block_size[0]; i ++) {
             var ground = scene.Sprite('img/ground.png');
             ground.position(74, i * ground_block_size[0]);
+            blocks.push(ground);
             ground.update();
         }
 
@@ -57,17 +51,21 @@ var init = function () {
         crazy_mario.rotate(Math.PI / 2);
         crazy_mario.update();
 
-
+        ticker = scene.Ticker(paint);
+        create_listeners();
+        ticker.run();
     });
-    ticker = scene.Ticker(paint);
 
-    create_listeners();
 };
 
 var paint = function (ticker) {
-    cycle.next(5).update();
-//    crazy_mario.move(0,3);
-    crazy_mario.yv = 3 * Math.sin(ticker.currentTick * Math.PI / 10) + 3;
+    if (crazy_mario.yv) {
+        cycle.next(5).update();
+    }
+    if (!crazy_mario.collidesWithArray(blocks)) {
+        crazy_mario.xv --;
+        crazy_mario.applyXVelocity();
+    }
     crazy_mario.applyYVelocity();
     crazy_mario.update();
 }
