@@ -1,17 +1,12 @@
 /**
  * Created by Travis on 2014/7/12.
  */
-var body, canvas, ctx;
+var body, ctx, crazy_mario, scene, ticker;
+var screen_h = screen.height - 4;
+var screen_w = screen.width;
+var cycle = [];
 
 $(document).ready(function() {
-    body = $('body');
-    body.tap(function () {
-        console.log("body tapped");
-    });
-    canvas = document.getElementById('canvas');
-    ctx = canvas.getContext('2d');
-    canvas.width = screen.width;
-    canvas.height = screen.height - 4;
 
-
+    init();
 });
