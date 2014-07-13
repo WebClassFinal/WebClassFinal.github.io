@@ -34,6 +34,25 @@ var paint = function (ticker) {
     refresh_map();
 };
 
+var init_map = function () {
+    // create ground
+    var ground_num = screen_h / (2 * block_size[0]);
+
+    for (var i = 0; i < ground_num; i ++) {
+        var ground = scene.Sprite('img/ground.png');
+        ground.position(74, i * ground_block_size[0]);
+        blocks.push(ground);
+        ground.update();
+    }
+
+//    for (var i = 0; i < 5; i ++) {
+//        var ground = scene.Sprite('img/ground.png');
+//        ground.position(74 + i * ground_block_size[1], ground_num * ground_block_size[0]);
+//        blocks.push(ground);
+//        ground.update();
+//    }
+}
+
 var init = function () {
     var scene = sjs.Scene({w:screen_w, h:screen_h});
 
@@ -52,16 +71,6 @@ var init = function () {
         crazy_mario.size(21,46);
         cycle.addSprite(crazy_mario);
         cycle.update();
-
-        // create ground
-        var ground_num = screen_h / (2 * block_size[0]);
-
-        for (var i = 0; i < ground_num; i ++) {
-            var ground = scene.Sprite('img/ground.png');
-            ground.position(74, i * ground_block_size[0]);
-            blocks.push(ground);
-            ground.update();
-        }
 
         // various transformations
         crazy_mario.position(100, 100);
