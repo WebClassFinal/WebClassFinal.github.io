@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head lang="en">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Crazy Mario</title>
-    <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+    <link rel="stylesheet" href="./css/jquery.mobile-1.4.2.min.css">
+    <link rel="stylesheet" href="./css/main.css">
     <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="//code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
     <script type="text/javascript" src="./js/vendor/sprite.js"></script>
@@ -12,8 +14,14 @@
     <script type="text/javascript" src="./js/vendor/collision.js"></script>
     <script type="text/javascript" src="./js/config.js"></script>
 </head>
+
 <body>
+    <div id="mario_map">
+        <canvas id="map"></canvas>
+    </div>
     <canvas id="canvas"></canvas>
     <script type="text/javascript" src="./js/main.js"></script>
+    <script type="text/javascript" src="./js/map.js"></script>
 </body>
+
 </html>

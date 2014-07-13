@@ -37,13 +37,13 @@ function randomOneLine(height) {
     }
     switch (currentCase) {
         case 0:
-            var stoneNum = Math.floor(Math.random() * height);
+            var stoneNum = Math.floor(Math.random() * height / 3 * 2);
             for (var i = 0; i < stoneNum; i++) {
                 (map.mapContent)[0][i] = stone;
             }
             break;
         case 1:
-            var stoneNum = Math.floor(Math.random() * height);
+            var stoneNum = Math.floor(Math.random() * height / 3 * 2);
             for (var i = 0; i < stoneNum; i++) {
                 (map.mapContent)[0][height - 1 - i] = stone;
             }
@@ -87,19 +87,34 @@ function connectMap(map1, map2){
     return newMap;
 }
 
-function drawImage(map, canvasContext){
-	console.log("sss");
-/*	canvasContext.fillStyle = "red";
-	canvasContext.fillRect(0,0,150,75);*/
+function drawImage(map, canvas){
+    canvasContext = canvas.getContext("2d");
+    canvasContext.rotate(Math.PI / 2 * (1));
+    canvasContext.scale(1,-1);
+    var heightPerBlock = canvas.width / map.height;
+    var img = new Image;
+    img.onload = function(){
+        var widthPerBlock = img.width * heightPerBlock / img.height;
+
+        for(var i = 0 ; i < map.length ; i++){
+            for(var j = 0 ; j < map.height ; j++){
+                if(map.mapContent[i][j] == stone){
+                    canvasContext.drawImage(img, i * widthPerBlock, j * heightPerBlock, widthPerBlock, heightPerBlock);
+                }
+            }
+        }
+    }
+    img.src = "./img/stone.jpg";   
 }
-/*var newMap = {
+var newMap = {
         height: 10,
         length: 0,
         mapContent: []
     };
 
-newMap = generateMap({height: 10, length: 10}, newMap);
-var can = document.getElementById("map");
-console.log(can);
-can = can.getContext("2d");
-drawImage(newMap, can);*/
+newMap = generateMap({height: 10, length: 100}, newMap);
+var canvas = $("#map");
+canvas.parent().css({"left": "95px"});
+canvas.attr("width", canvas.parent().width());
+canvas.attr("height", 2 * canvas.parent().height());
+drawImage(newMap, canvas.get(0));
