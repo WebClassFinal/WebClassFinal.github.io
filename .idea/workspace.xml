@@ -2,15 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f7a5e91b-0182-4891-b5a8-2095e6f4b466" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/ground.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/mario_8_bit.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/vendor/jquery.mobile-1.4.3.min.map" />
-      <change type="DELETED" beforePath="E:\Code\WWW\Homework\WebClassFinal.github.io\img\ground.png" afterPath="" />
-      <change type="DELETED" beforePath="E:\Code\WWW\Homework\WebClassFinal.github.io\img\mario_8_bit.jpg" afterPath="" />
-      <change type="DELETED" beforePath="E:\Code\WWW\Homework\WebClassFinal.github.io\img\stone.jpg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/map.js" afterPath="$PROJECT_DIR$/js/map.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/tools.js" afterPath="$PROJECT_DIR$/js/tools.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="WebClassFInal.github.io.iws" />
@@ -360,7 +351,11 @@
       <created>1405233856320</created>
       <updated>1405233856320</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="material">
+      <created>1405235802729</created>
+      <updated>1405235802729</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -430,7 +425,8 @@
     <MESSAGE value="jump action implemented" />
     <MESSAGE value="ground move along" />
     <MESSAGE value="init map&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="init map&#10;" />
+    <MESSAGE value="material" />
+    <option name="LAST_COMMIT_MESSAGE" value="material" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -549,13 +545,13 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="10421">
           <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
           <folding>
-            <marker date="1405235726278" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1405235726278" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1405235726278" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1405235726278" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1405235726278" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1405235726278" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1405235726278" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405235831289" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405235831289" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405235831289" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405235831289" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405235831289" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405235831289" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1405235831289" expanded="true" signature="-1:-1" placeholder="..." />
           </folding>
         </state>
       </provider>
