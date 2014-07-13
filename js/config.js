@@ -7,3 +7,4 @@ var block_size = [21,21];
 var ground_block_size = block_size;
 var mario_size = [block_size[0],46];
 var jump_speed = 20;
+var global_speed = 3;

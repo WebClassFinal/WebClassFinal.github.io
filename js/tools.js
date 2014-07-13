@@ -1,8 +1,7 @@
 /**
  * Created by Travis on 2014/7/12.
  */
-var isRunning = false;
-var firstRun = true;
+
 
 var create_listeners = function () {
     body = $('body');
@@ -12,6 +11,27 @@ var create_listeners = function () {
             crazy_mario.applyXVelocity();
         }
     });
+};
+
+var refresh_map = function () {
+    for (var i = 0; i < blocks.length; i ++) {
+        blocks[i].move(0, - global_speed);
+        blocks[i].update();
+    }
+}
+
+var paint = function (ticker) {
+    cycle.next(5).update();
+
+    if (!crazy_mario.collidesWithArray(blocks)) {
+        crazy_mario.xv --;
+        crazy_mario.applyXVelocity();
+    }
+//    crazy_mario.yv = 2;
+//    crazy_mario.applyYVelocity();
+    crazy_mario.update();
+
+    refresh_map();
 };
 
 var init = function () {
@@ -34,17 +54,14 @@ var init = function () {
         cycle.update();
 
         // create ground
-        for (var i = 0; i < screen_h / block_size[0]; i ++) {
+        var ground_num = screen_h / (2 * block_size[0]);
+
+        for (var i = 0; i < ground_num; i ++) {
             var ground = scene.Sprite('img/ground.png');
             ground.position(74, i * ground_block_size[0]);
             blocks.push(ground);
             ground.update();
         }
-
-
-        // change the offset of the image in the sprite
-        // (this works the opposite way of a CSS background)
-        // sp.offset(50, 50);
 
         // various transformations
         crazy_mario.position(100, 100);
@@ -58,17 +75,6 @@ var init = function () {
 
 };
 
-var paint = function (ticker) {
-    if (crazy_mario.yv) {
-        cycle.next(5).update();
-    }
-    if (!crazy_mario.collidesWithArray(blocks)) {
-        crazy_mario.xv --;
-        crazy_mario.applyXVelocity();
-    }
-    crazy_mario.applyYVelocity();
-    crazy_mario.update();
-}
 
 
 
