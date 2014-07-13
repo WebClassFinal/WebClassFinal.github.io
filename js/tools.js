@@ -20,6 +20,9 @@ var refresh_map = function () {
 
 var paint = function (ticker) {
     cycle.next(5).update();
+    if (crazy_mario.x < 0) {
+        crazy_mario.setX(screen_w);
+    }
 
     if (!crazy_mario.collidesWithArray(blocks.list)) {
         crazy_mario.xv --;
@@ -38,43 +41,45 @@ var init_map = function () {
     draw_map();
 };
 var extend_map = function () {
-    map = generateMap({height: map_height, length: map_growth}, map);
-    console.log(map);
-
+    map = generateMap({height: map_height, length: map_growth + map.length}, map);
     // add the extended part of the map to the blocks
     for (var i = map.length - map_growth; i < map.length; i ++) {
-        console.log(map.mapContent[i]);
         for (var j = 0; j < map.height; j ++) {
             var type = getElementAt(map, j, i);
             if (!type) continue;
             var block;
             if (1 == type) {
                 block = scene.Sprite('images/stone.png');
-
             } else if (2 == type) {
                 block = scene.Sprite('images/medicine.png');
             }
             block.position(j * block_size[1], i * block_size[0] - current_progress);
             blocks.add(block);
+            break;
         }
     }
 };
 
 var draw_map = function () {
     // if map end is nigh, extend the original map
-//    if (map.length < current_progress + map_buffer_size) {
-//        extend_map();
-//    }
+    console.log("map length: " + map.length + "; progress: " + current_progress + "; buffer " + map_buffer_size);
+    if (map.length < current_progress / block_size[0] + map_buffer_size) {
+        extend_map();
+    }
     console.log(blocks.length);
     // update blocks' position
     for (var i = 0; i < blocks.length; i ++) {
         var block = blocks.list[i];
-        // TODO
         // if block goes beyond the map, eliminate it
-
-        block.yv = - global_speed;
-        block.applyYVelocity();
-        block.update();
+        if (block.y < 0) {
+            block.remove();
+            blocks.remove(block);
+            i --;
+        } else {
+            block.yv = - global_speed;
+            block.applyYVelocity();
+            block.update();
+        }
     }
 };
 
