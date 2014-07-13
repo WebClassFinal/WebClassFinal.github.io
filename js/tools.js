@@ -69,16 +69,9 @@ var draw_map = function () {
     // update blocks' position
     for (var i = 0; i < blocks.length; i ++) {
         var block = blocks.list[i];
+        // TODO
         // if block goes beyond the map, eliminate it
-//        if (block.y < current_progress) {
-//            blocks.remove(block);
-//            block.remove();
-//            i --;
-//        } else {
-//            block.yv = - global_speed;
-//            block.applyYVelocity();
-//            block.update();
-//        }
+
         block.yv = - global_speed;
         block.applyYVelocity();
         block.update();
