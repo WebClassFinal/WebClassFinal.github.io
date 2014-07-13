@@ -26,10 +26,11 @@ var paint = function (ticker) {
 
     if (!crazy_mario.collidesWithArray(blocks.list)) {
         crazy_mario.xv --;
-        crazy_mario.applyXVelocity();
+    } else {
+        crazy_mario.xv = 0;
     }
-//    crazy_mario.yv = 2;
-//    crazy_mario.applyYVelocity();
+    crazy_mario.applyXVelocity();
+
     crazy_mario.update();
 
     refresh_map();
@@ -53,7 +54,7 @@ var extend_map = function () {
             } else if (2 == type) {
                 block = scene.Sprite('images/medicine.png');
             }
-            block.position(j * block_size[1], i * block_size[0] - current_progress);
+            block.position(Math.max(j, 4) * block_size[1], i * block_size[0] - current_progress);
             blocks.add(block);
             break;
         }
