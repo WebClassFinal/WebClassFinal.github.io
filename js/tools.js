@@ -1,12 +1,12 @@
 /**
  * Created by Travis on 2014/7/12.
  */
-
+var current_progress = 0;
 
 var create_listeners = function () {
     body = $('body');
     body.tap(function () {
-        if (crazy_mario.collidesWithArray(blocks)) {
+        if (crazy_mario.collidesWithArray(blocks.list)) {
             crazy_mario.xv = jump_speed;
             crazy_mario.applyXVelocity();
         }
@@ -14,16 +14,13 @@ var create_listeners = function () {
 };
 
 var refresh_map = function () {
-    for (var i = 0; i < blocks.length; i ++) {
-        blocks[i].move(0, - global_speed);
-        blocks[i].update();
-    }
-}
+
+};
 
 var paint = function (ticker) {
     cycle.next(5).update();
 
-    if (!crazy_mario.collidesWithArray(blocks)) {
+    if (!crazy_mario.collidesWithArray(blocks.list)) {
         crazy_mario.xv --;
         crazy_mario.applyXVelocity();
     }
@@ -34,16 +31,25 @@ var paint = function (ticker) {
     refresh_map();
 };
 
+// init map
 var init_map = function () {
-    // create ground
-    var ground_num = screen_h / (2 * block_size[0]);
+    map = generateMap({height: map_height, length: 100}, map);
+    for (var i = 0; i < map.length; i ++) {
+        for (var j = 0; j < map.height; j ++) {
+            var type = getElementAt(map, j, i);
+            if (!type) continue;
+            if (type == 1) {
+                var stone = scene.Sprite('images/stone.png');
+            } else if (type == 2) {
 
-    for (var i = 0; i < ground_num; i ++) {
-        var ground = scene.Sprite('images/ground.png');
-        ground.position(74, i * ground_block_size[0]);
-        blocks.push(ground);
-        ground.update();
+            }
+
+        }
     }
+};
+
+var draw_map = function (map) {
+
 };
 
 var init = function () {
@@ -51,7 +57,7 @@ var init = function () {
 
     // load the images in parallel. When all the images are
     // ready, the callback function is called.
-    scene.loadImages(['images/mario_8_bit.png','images/ground.png'], function() {
+    scene.loadImages(['images/mario_8_bit.png','images/stone.png', 'images/medicine.png'], function() {
 
         init_map();
 
@@ -69,7 +75,7 @@ var init = function () {
         cycle.update();
 
         // various transformations
-        crazy_mario.position(100, 100);
+        crazy_mario.position(screen_w, mario_init_y);
         crazy_mario.rotate(Math.PI / 2);
         crazy_mario.update();
 

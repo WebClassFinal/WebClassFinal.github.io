@@ -24,6 +24,10 @@ function generateMap(size, preMap) {
     return newMap;
 }
 
+function getElementAt(map, x, y) {
+    return (map.mapContent)[y][x];
+}
+
 function randomOneLine(height) {
     var caseNum = 3;
     var currentCase = Math.floor(Math.random() * 3);
@@ -90,7 +94,7 @@ function connectMap(map1, map2){
 function drawImage(map, canvas){
     canvasContext = canvas.getContext("2d");
     canvasContext.rotate(Math.PI / 2 * (1));
-    canvasContext.scale(1,-1);
+    canvasContext.scale(1, -1);
     var heightPerBlock = canvas.width / map.height;
     var img = new Image;
     img.onload = function(){
@@ -106,13 +110,13 @@ function drawImage(map, canvas){
     }
     img.src = "./images/stone.jpg";
 }
-var newMap = {
-        height: 10,
-        length: 0,
-        mapContent: []
-    };
+//var newMap = {
+//        height: 10,
+//        length: 0,
+//        mapContent: []
+//    };
 
-newMap = generateMap({height: 10, length: 100}, newMap);
+//newMap = generateMap({height: 10, length: 100}, newMap);
 //var canvas = $("#map");
 //canvas.parent().css({"left": "95px"});
 //canvas.attr("width", canvas.parent().width());
