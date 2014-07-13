@@ -14,7 +14,8 @@ var create_listeners = function () {
 };
 
 var refresh_map = function () {
-
+    draw_map();
+    current_progress += global_speed;
 };
 
 var paint = function (ticker) {
@@ -33,23 +34,55 @@ var paint = function (ticker) {
 
 // init map
 var init_map = function () {
-    map = generateMap({height: map_height, length: 100}, map);
-    for (var i = 0; i < map.length; i ++) {
+    extend_map();
+    draw_map();
+};
+var extend_map = function () {
+    map = generateMap({height: map_height, length: map_growth}, map);
+    console.log(map);
+
+    // add the extended part of the map to the blocks
+    for (var i = map.length - map_growth; i < map.length; i ++) {
+        console.log(map.mapContent[i]);
         for (var j = 0; j < map.height; j ++) {
             var type = getElementAt(map, j, i);
             if (!type) continue;
-            if (type == 1) {
-                var stone = scene.Sprite('images/stone.png');
-            } else if (type == 2) {
+            var block;
+            if (1 == type) {
+                block = scene.Sprite('images/stone.png');
 
+            } else if (2 == type) {
+                block = scene.Sprite('images/medicine.png');
             }
-
+            block.position(j * block_size[1], i * block_size[0] - current_progress);
+            blocks.add(block);
         }
     }
 };
 
-var draw_map = function (map) {
-
+var draw_map = function () {
+    // if map end is nigh, extend the original map
+//    if (map.length < current_progress + map_buffer_size) {
+//        extend_map();
+//    }
+    console.log(blocks.length);
+    // update blocks' position
+    for (var i = 0; i < blocks.length; i ++) {
+        var block = blocks.list[i];
+        // if block goes beyond the map, eliminate it
+//        if (block.y < current_progress) {
+//            blocks.remove(block);
+//            block.remove();
+//            i --;
+//        } else {
+//            block.yv = - global_speed;
+//            block.applyYVelocity();
+//            block.update();
+//        }
+        block.yv = - global_speed;
+        block.applyYVelocity();
+        block.update();
+    }
 };
 
 var init = function () {
@@ -57,7 +90,7 @@ var init = function () {
 
     // load the images in parallel. When all the images are
     // ready, the callback function is called.
-    scene.loadImages(['images/mario_8_bit.png','images/stone.png', 'images/medicine.png'], function() {
+    scene.loadImages(['images/mario_8_bit.png', 'images/stone.png', 'images/medicine.png'], function() {
 
         init_map();
 
