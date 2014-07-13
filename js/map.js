@@ -104,7 +104,7 @@ function drawImage(map, canvas){
             }
         }
     }
-    img.src = "./img/stone.jpg";   
+    img.src = "./images/stone.jpg";
 }
 var newMap = {
         height: 10,
@@ -113,8 +113,8 @@ var newMap = {
     };
 
 newMap = generateMap({height: 10, length: 100}, newMap);
-var canvas = $("#map");
-canvas.parent().css({"left": "95px"});
-canvas.attr("width", canvas.parent().width());
-canvas.attr("height", 2 * canvas.parent().height());
-drawImage(newMap, canvas.get(0));
+//var canvas = $("#map");
+//canvas.parent().css({"left": "95px"});
+//canvas.attr("width", canvas.parent().width());
+//canvas.attr("height", 2 * canvas.parent().height());
+//drawImage(newMap, canvas.get(0));

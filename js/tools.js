@@ -39,26 +39,22 @@ var init_map = function () {
     var ground_num = screen_h / (2 * block_size[0]);
 
     for (var i = 0; i < ground_num; i ++) {
-        var ground = scene.Sprite('img/ground.png');
+        var ground = scene.Sprite('images/ground.png');
         ground.position(74, i * ground_block_size[0]);
         blocks.push(ground);
         ground.update();
     }
-
-//    for (var i = 0; i < 5; i ++) {
-//        var ground = scene.Sprite('img/ground.png');
-//        ground.position(74 + i * ground_block_size[1], ground_num * ground_block_size[0]);
-//        blocks.push(ground);
-//        ground.update();
-//    }
-}
+};
 
 var init = function () {
-    var scene = sjs.Scene({w:screen_w, h:screen_h});
+    scene = sjs.Scene({w:screen_w, h:screen_h});
 
     // load the images in parallel. When all the images are
     // ready, the callback function is called.
-    scene.loadImages(['img/mario_8_bit.jpg','img/ground.png'], function() {
+    scene.loadImages(['images/mario_8_bit.png','images/ground.png'], function() {
+
+        init_map();
+
         // define the walking movements of mario
         var positions = [];
         for (var i = 0; i < 20; i++) {
@@ -67,7 +63,7 @@ var init = function () {
         cycle = scene.Cycle(positions);
 
         // create mario and set movements
-        crazy_mario = scene.Sprite('img/mario_8_bit.jpg');
+        crazy_mario = scene.Sprite('images/mario_8_bit.png');
         crazy_mario.size(21,46);
         cycle.addSprite(crazy_mario);
         cycle.update();
