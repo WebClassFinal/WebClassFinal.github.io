@@ -3,7 +3,8 @@
  */
 var body, crazy_mario, scene, ticker;
 var blocks = sjs.List();
-
+var medicines = sjs.List();
+var medicine_sound;
 var screen_h = screen.height - 4;
 var screen_w = screen.width;
 var stone_img_size = [21,21];
@@ -30,3 +31,9 @@ var factor = 1; // step_away / falling speed
 var step_away = max_falling_speed * factor;
 var medicine_collected = 0;
 var medicine_efficacy = 2;
+
+var materials = [
+    'images/mario_8_bit.png',
+    'images/stone.png',
+    'images/medicine.png'
+];

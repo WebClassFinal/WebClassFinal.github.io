@@ -73,6 +73,16 @@ var jump_collision_classify = function (crazy_mario, list) {
     }
 };
 
+var eat_medicine = function () {
+    var m = crazy_mario.collidesWithArray(medicines.list);
+    if (m) {
+        m.remove();
+        medicines.remove(m);
+        medicine_collected ++;
+        eat_medicine_sound();
+    }
+};
+
 var step_away_beneath = function (crazy_mario, list) {
     step_away = Math.abs(crazy_mario.xv) * factor;
     crazy_mario.move(-step_away, 0);

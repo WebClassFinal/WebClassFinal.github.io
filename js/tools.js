@@ -4,11 +4,13 @@
 var current_progress = 0;
 
 var init = function () {
+    medicine_sound = document.getElementById("soundEfx");
+
     scene = sjs.Scene({w:screen_w, h:screen_h});
 
     // load the images in parallel. When all the images are
     // ready, the callback function is called.
-    scene.loadImages(['images/mario_8_bit.png', 'images/stone.png', 'images/medicine.png'], function() {
+    scene.loadImages(materials, function() {
 
         // define the walking movements of mario
         var positions = [];
@@ -66,6 +68,7 @@ var paint = function () {
 
     // update Mario's movements based on collision types;
     mario_movement_classify(crazy_mario, valuable_blocks(crazy_mario, blocks));
+    eat_medicine();
 };
 
 var valuable_blocks = function (crazy_mario, blocks) {
@@ -79,7 +82,7 @@ var valuable_blocks = function (crazy_mario, blocks) {
         vb.push(b);
     }
     return vb;
-}
+};
 
 var get_current_global_speed = function () {
     return Math.max(0, Math.floor(ticker.currentTick / speed_mutation_period) * speed_mutation_range
@@ -100,12 +103,16 @@ var extend_map = function () {
             if (!type) continue;
             var block;
             if (1 == type) {
-                block = scene.Sprite('images/stone.png');
+                block = scene.Sprite('IMAGES/stone.png');
             } else if (2 == type) {
                 block = scene.Sprite('images/medicine.png');
             }
             block.position(j * block_size[1], i * block_size[0] - current_progress);
-            blocks.add(block);
+            if (1 == type) {
+                blocks.add(block);
+            } else {
+                medicines.add(block);
+            }
         }
     }
 };
@@ -116,19 +123,42 @@ var draw_map = function () {
     if (map.length < current_progress / block_size[0] + map_buffer_size) {
         extend_map();
     }
-//    console.log(blocks.length);
+    update_blocks();
+    update_medicines();
+//    console.log(blocks.length + ": " + medicines.length);
+};
+
+var update_medicines = function () {
     // update blocks' position
-    for (var i = 0; i < blocks.length; i ++) {
-        var block = blocks.list[i];
+    for (var i = 0; i < medicines.length; i ++) {
+        var obj = medicines.list[i];
         // if block goes beyond the map, eliminate it
-        if (block.y < - block_size[1]) {
-            block.remove();
-            blocks.remove(block);
+        if (obj.y < - block_size[1]) {
+            obj.remove();
+            medicines.remove(obj);
             i --;
         } else {
-            block.yv = - get_current_global_speed();
-            block.applyYVelocity();
-            block.update();
+            obj.yv = - get_current_global_speed();
+            obj.applyYVelocity();
+            obj.update();
+        }
+    }
+}
+
+var update_blocks = function () {
+
+    // update blocks' position
+    for (var i = 0; i < blocks.length; i ++) {
+        var obj = blocks.list[i];
+        // if block goes beyond the map, eliminate it
+        if (obj.y < - block_size[1]) {
+            obj.remove();
+            blocks.remove(obj);
+            i --;
+        } else {
+            obj.yv = - get_current_global_speed();
+            obj.applyYVelocity();
+            obj.update();
         }
     }
 };
