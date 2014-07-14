@@ -16,7 +16,7 @@ var init = function () {
         var positions = [];
         for (var i = 0; i < 20; i++) {
             positions.push([i * 21 + 1, 13, 5]);
-        };
+        }
         cycle = scene.Cycle(positions);
 
         // create mario and set movements
@@ -54,7 +54,7 @@ var restart = function () {
     crazy_mario.yv = 0;
 };
 
-var paint = function (ticker) {
+var paint = function () {
     cycle.next(5).update();
 
     // draw other blocks

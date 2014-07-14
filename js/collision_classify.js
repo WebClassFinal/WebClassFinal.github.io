@@ -33,7 +33,7 @@ var super_collision_detection = function (crazy_mario, list) {
     var has_side_collision = false;
     var has_bottom_collision = false;
     if (crazy_mario.collidesWithArray(list)) {
-        var c_x = crazy_mario.x, c_y = crazy_mario.y;
+
         for (var i = 0; i < list.length; i ++) {
             var block = list[i];
             if (!has_bottom_collision) { has_bottom_collision = has_bottom_collision || bottom_collision(crazy_mario, block); }
@@ -51,7 +51,12 @@ var super_collision_detection = function (crazy_mario, list) {
 
 var jump_collision_classify = function (crazy_mario, list) {
     var cb = crazy_mario.collidesWithArray(list);
-    if (cb) {
+    if (!cb) {
+        if (crazy_mario.xv < 0 && step_away_beneath(crazy_mario, list)) {
+            crazy_mario.xv = jump_speed;
+            crazy_mario.applyXVelocity();
+        }
+    } else {
         var type = collision_type(crazy_mario, cb);
         switch (type) {
             case 'top':
@@ -64,13 +69,11 @@ var jump_collision_classify = function (crazy_mario, list) {
             default :
                 break;
         }
-    } else if (crazy_mario.xv < 0 && step_away_beneath(crazy_mario, list)) {
-        crazy_mario.xv = jump_speed;
-        crazy_mario.applyXVelocity();
     }
 };
 
 var step_away_beneath = function (crazy_mario, list) {
+    step_away = Math.abs(crazy_mario.xv) * factor;
     crazy_mario.move(-step_away, 0);
     var c = crazy_mario.collidesWithArray(list);
     crazy_mario.move(step_away, 0);
@@ -97,8 +100,10 @@ var collision_type = function (crazy_mario, block) {
 
 var mario_movement_classify = function (crazy_mario, list) {
     var cb = crazy_mario.collidesWithArray(list);
-//    debugger;
-    crazy_mario.xv -= gravity;
+    if (crazy_mario.xv > - max_falling_speed)
+    {
+        crazy_mario.xv -= gravity;
+    }
     if (!cb) {
         var xv = crazy_mario.xv, yv = global_speed;
         var y_step = 1, r = xv / yv;
