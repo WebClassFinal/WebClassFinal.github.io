@@ -40,6 +40,21 @@ function generateMap(size, preMap) {
     }
     return newMap;
 }
+var run_once = 2;
+function bogus_generate_map(size, pre_map) {
+    var new_map = generateMap(size, pre_map);
+    for (var i = 0; i < new_map.length; i ++) {
+        for (var j = 0; j < new_map.height; j ++) {
+            new_map.mapContent[i][j] = (j == 2 ) || (j == 5);
+        }
+    }
+    if (run_once) {
+        new_map.mapContent[25][5] = 0;
+        run_once --;
+    }
+
+    return new_map;
+}
 
 function initializeSomeLine(height, length){
     var result = {
@@ -199,7 +214,7 @@ function drawImage(map, canvas){
                 }
             }
         }
-    }
+    };
     img.src = "./img/stone.jpg";
     var img2 = new Image;
     img2.onload = function(){
@@ -212,7 +227,7 @@ function drawImage(map, canvas){
                 }
             }
         }
-    }
+    };
     img2.src = "./img/medicine.jpg";
 }
 

@@ -10,8 +10,6 @@ var init = function () {
     // ready, the callback function is called.
     scene.loadImages(['images/mario_8_bit.png', 'images/stone.png', 'images/medicine.png'], function() {
 
-        init_map();
-
         // define the walking movements of mario
         var positions = [];
         for (var i = 0; i < 20; i++) {
@@ -31,6 +29,7 @@ var init = function () {
         crazy_mario.update();
 
         ticker = scene.Ticker(paint);
+        init_map();
         create_listeners();
         ticker.run();
     });
@@ -45,7 +44,7 @@ var create_listeners = function () {
 
 var refresh_map = function () {
     draw_map();
-    current_progress += global_speed;
+    current_progress += get_current_global_speed();
 };
 var restart = function () {
     crazy_mario.setX(screen_w);
@@ -69,6 +68,11 @@ var paint = function () {
     mario_movement_classify(crazy_mario, blocks.list);
 };
 
+var get_current_global_speed = function () {
+    return Math.max(0, Math.floor(ticker.currentTick / speed_mutation_period) * speed_mutation_range
+        - medicine_collected * medicine_efficacy ) + global_speed;
+};
+
 // init map
 var init_map = function () {
     extend_map();
@@ -87,10 +91,8 @@ var extend_map = function () {
             } else if (2 == type) {
                 block = scene.Sprite('images/medicine.png');
             }
-//            block.scale(block_size[0] / stone_img_size[0]);
-            block.position(Math.max(j, 4) * block_size[1], i * block_size[0] - current_progress);
+            block.position(j * block_size[1], i * block_size[0] - current_progress);
             blocks.add(block);
-            break;
         }
     }
 };
@@ -111,7 +113,7 @@ var draw_map = function () {
             blocks.remove(block);
             i --;
         } else {
-            block.yv = - global_speed;
+            block.yv = - get_current_global_speed();
             block.applyYVelocity();
             block.update();
         }
