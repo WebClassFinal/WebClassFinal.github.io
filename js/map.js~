@@ -27,6 +27,10 @@ function generateMap(size, preMap) {
     return newMap;
 }
 
+function getElementAt(map, x, y) {
+    return (map.mapContent)[y][x];
+}
+
 function randomOneLine(height, currentPreMap) {
     var caseNum = 3;
     var currentCase = Math.floor(Math.random() * 3);
