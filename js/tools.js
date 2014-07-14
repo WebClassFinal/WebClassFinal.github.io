@@ -92,7 +92,7 @@ var init_map = function () {
     draw_map();
 };
 var extend_map = function () {
-    map = bogus_generate_map({height: map_height, length: map_growth + map.length}, map);
+    map = generateMap({height: map_height, length: map_growth + map.length}, map);
     // add the extended part of the map to the blocks
     for (var i = map.length - map_growth; i < map.length; i ++) {
         for (var j = 0; j < map.height; j ++) {

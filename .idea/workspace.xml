@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f7a5e91b-0182-4891-b5a8-2095e6f4b466" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/config.js" afterPath="$PROJECT_DIR$/js/config.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/tools.js" afterPath="$PROJECT_DIR$/js/tools.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -40,8 +39,8 @@
       <file leaf-file-name="tools.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/tools.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.44634145" vertical-offset="1279" max-vertical-offset="2839">
-              <caret line="86" column="2" selection-start-line="86" selection-start-column="2" selection-end-line="86" selection-end-column="2" />
+            <state vertical-scroll-proportion="0.4707317" vertical-offset="1371" max-vertical-offset="2839">
+              <caret line="92" column="2" selection-start-line="92" selection-start-column="2" selection-end-line="92" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -432,7 +431,11 @@
       <created>1405343249521</created>
       <updated>1405343249521</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Code efficacy improvement">
+      <created>1405343835942</created>
+      <updated>1405343835942</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -517,7 +520,8 @@
     <MESSAGE value="trigger type changed" />
     <MESSAGE value="Landing distance refined" />
     <MESSAGE value="Fixed ceil sticky problem" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed ceil sticky problem" />
+    <MESSAGE value="Code efficacy improvement" />
+    <option name="LAST_COMMIT_MESSAGE" value="Code efficacy improvement" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -801,8 +805,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/tools.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44634145" vertical-offset="1279" max-vertical-offset="2839">
-          <caret line="86" column="2" selection-start-line="86" selection-start-column="2" selection-end-line="86" selection-end-column="2" />
+        <state vertical-scroll-proportion="0.4707317" vertical-offset="1371" max-vertical-offset="2839">
+          <caret line="92" column="2" selection-start-line="92" selection-start-column="2" selection-end-line="92" selection-end-column="2" />
           <folding />
         </state>
       </provider>
