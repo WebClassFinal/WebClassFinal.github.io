@@ -38,7 +38,7 @@ var init = function () {
 
 var create_listeners = function () {
     body = $('body');
-    body.tap(function () {
+    body.touchstart(function () {
         jump_collision_classify(crazy_mario, blocks.list);
     });
 };
