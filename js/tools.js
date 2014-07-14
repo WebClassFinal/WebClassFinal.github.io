@@ -65,8 +65,21 @@ var paint = function () {
     }
 
     // update Mario's movements based on collision types;
-    mario_movement_classify(crazy_mario, blocks.list);
+    mario_movement_classify(crazy_mario, valuable_blocks(crazy_mario, blocks));
 };
+
+var valuable_blocks = function (crazy_mario, blocks) {
+    var vb = [];
+    var mx = crazy_mario.x, my = crazy_mario.y;
+    for (var i = 0; i < blocks.list.length; i ++) {
+        var b = blocks.list[i];
+        if (Math.abs(b.x - mx) > block_size[0] * 3 || Math.abs(b.y - my) > block_size[1] * 3) {
+            continue;
+        }
+        vb.push(b);
+    }
+    return vb;
+}
 
 var get_current_global_speed = function () {
     return Math.max(0, Math.floor(ticker.currentTick / speed_mutation_period) * speed_mutation_range
@@ -79,7 +92,7 @@ var init_map = function () {
     draw_map();
 };
 var extend_map = function () {
-    map = generateMap({height: map_height, length: map_growth + map.length}, map);
+    map = bogus_generate_map({height: map_height, length: map_growth + map.length}, map);
     // add the extended part of the map to the blocks
     for (var i = map.length - map_growth; i < map.length; i ++) {
         for (var j = 0; j < map.height; j ++) {

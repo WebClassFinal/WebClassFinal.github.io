@@ -24,6 +24,7 @@ var map = {
 var mario_init_y = 250;
 var map_buffer_size = map_growth;
 var border = 5;
+var neighbourhood_size = 50;
 var max_falling_speed = 15;
 var factor = 1; // step_away / falling speed
 var step_away = max_falling_speed * factor;
