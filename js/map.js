@@ -111,6 +111,9 @@ function randomOneLine(height, currentPreMap) {
         }
     }
 }
+function getElementAt(map, x, y) {
+    return (map.mapContent)[y][x];
+}
 //If one of map* is empty, return true.
 //If the blank or medicine blocks are connected, return true. otherwise return false.
 function couldConnect(map1, map2) {
