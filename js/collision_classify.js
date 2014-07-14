@@ -111,7 +111,7 @@ var mario_movement_classify = function (crazy_mario, list) {
             crazy_mario.move( - Math.floor(r * (y_step - 1)), 0);
             do {
                 crazy_mario.move(f * 2 - 1, 0);
-            } while (crazy_mario.collidesWithArray(blocks.list));
+            } while (!crazy_mario.collidesWithArray(blocks.list));
             if (f) {
                 crazy_mario.xv = -1;
             } else {
@@ -119,13 +119,15 @@ var mario_movement_classify = function (crazy_mario, list) {
             }
         }
     } else {
+//        console.log(cb);
+//        debugger;
         var type = collision_type(crazy_mario, cb);
         switch (type) {
             case "top":
                 crazy_mario.xv = 0;
                 break;
             case "side":
-                crazy_mario.move( -global_speed, 0 );
+                crazy_mario.move( -1 , - global_speed);
                 break;
             case "bottom":
                 crazy_mario.xv = 0;
