@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f7a5e91b-0182-4891-b5a8-2095e6f4b466" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/collision_classify.js" afterPath="$PROJECT_DIR$/js/collision_classify.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/config.js" afterPath="$PROJECT_DIR$/js/config.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/tools.js" afterPath="$PROJECT_DIR$/js/tools.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="WebClassFInal.github.io.iws" />
@@ -38,21 +36,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tools.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="tools.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/tools.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.4414635" vertical-offset="1619" max-vertical-offset="2584">
-              <caret line="130" column="0" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1619" max-vertical-offset="2584">
+              <caret line="102" column="5" selection-start-line="102" selection-start-column="5" selection-end-line="102" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="collision_classify.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="collision_classify.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/collision_classify.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2737">
-              <caret line="53" column="13" selection-start-line="53" selection-start-column="13" selection-end-line="53" selection-end-column="13" />
+            <state vertical-scroll-proportion="1.1989925" vertical-offset="2108" max-vertical-offset="2720">
+              <caret line="152" column="5" selection-start-line="152" selection-start-column="5" selection-end-line="152" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -116,9 +114,9 @@
         <option value="$PROJECT_DIR$/js/main.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/js/collision_classify.js" />
         <option value="$PROJECT_DIR$/js/config.js" />
         <option value="$PROJECT_DIR$/js/tools.js" />
+        <option value="$PROJECT_DIR$/js/collision_classify.js" />
       </list>
     </option>
   </component>
@@ -403,7 +401,15 @@
       <created>1405322055943</created>
       <updated>1405322055943</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="mario behavior completed">
+      <created>1405325699796</created>
+      <updated>1405325699796</updated>
+    </task>
+    <task id="LOCAL-00019" summary="add ajax-loader gif">
+      <created>1405325733896</created>
+      <updated>1405325733896</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -482,7 +488,9 @@
     <MESSAGE value="jump vertical speed problem fixed" />
     <MESSAGE value="mario movement fixed" />
     <MESSAGE value="file left behind" />
-    <option name="LAST_COMMIT_MESSAGE" value="file left behind" />
+    <MESSAGE value="mario behavior completed" />
+    <MESSAGE value="add ajax-loader gif" />
+    <option name="LAST_COMMIT_MESSAGE" value="add ajax-loader gif" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -738,18 +746,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/collision_classify.js">
+    <entry file="file://$PROJECT_DIR$/js/tools.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2737">
-          <caret line="53" column="13" selection-start-line="53" selection-start-column="13" selection-end-line="53" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1619" max-vertical-offset="2584">
+          <caret line="102" column="5" selection-start-line="102" selection-start-column="5" selection-end-line="102" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/tools.js">
+    <entry file="file://$PROJECT_DIR$/js/collision_classify.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.4414635" vertical-offset="1619" max-vertical-offset="2584">
-          <caret line="130" column="0" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
+        <state vertical-scroll-proportion="1.1989925" vertical-offset="2108" max-vertical-offset="2720">
+          <caret line="152" column="5" selection-start-line="152" selection-start-column="5" selection-end-line="152" selection-end-column="5" />
           <folding />
         </state>
       </provider>

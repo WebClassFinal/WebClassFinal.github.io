@@ -114,7 +114,6 @@ var mario_movement_classify = function (crazy_mario, list) {
             crazy_mario.move( x_offset , 1);
             c = crazy_mario.collidesWithArray(list);
             y_step ++;
-            crazy_mario.update();
         } while (!c && y_step <= yv);
 
         // adjust x coordinate to avoid penetrate
