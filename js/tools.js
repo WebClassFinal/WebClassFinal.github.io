@@ -47,7 +47,9 @@ var refresh_map = function () {
     draw_map();
     current_progress += global_speed;
 };
-var clear_speed = function () {
+var restart = function () {
+    crazy_mario.setX(screen_w);
+    crazy_mario.setY(mario_init_y);
     crazy_mario.xv = 0;
     crazy_mario.yv = 0;
 };
@@ -58,15 +60,9 @@ var paint = function (ticker) {
     // draw other blocks
     refresh_map();
 
-    // return to the top if Mario falls down
-    if (crazy_mario.x + mario_size[1] < 0) {
-        crazy_mario.setX(screen_w);
-        clear_speed();
-    }
-
-    if (crazy_mario.y< 0) {
-        crazy_mario.setY(mario_init_y);
-        clear_speed();
+    // return to the top if Mario falls down or goes beyond the border
+    if (crazy_mario.x + mario_size[1] < 0 || crazy_mario.y< 0) {
+        restart();
     }
 
     // update Mario's movements based on collision types;

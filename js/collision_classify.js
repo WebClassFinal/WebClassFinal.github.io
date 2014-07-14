@@ -64,7 +64,17 @@ var jump_collision_classify = function (crazy_mario, list) {
             default :
                 break;
         }
+    } else if (crazy_mario.xv < 0 && step_away_beneath(crazy_mario, list)) {
+        crazy_mario.xv = jump_speed;
+        crazy_mario.applyXVelocity();
     }
+};
+
+var step_away_beneath = function (crazy_mario, list) {
+    crazy_mario.move(-step_away, 0);
+    var c = crazy_mario.collidesWithArray(list);
+    crazy_mario.move(step_away, 0);
+    return c;
 };
 
 var collision_type = function (crazy_mario, block) {
@@ -88,9 +98,9 @@ var collision_type = function (crazy_mario, block) {
 var mario_movement_classify = function (crazy_mario, list) {
     var cb = crazy_mario.collidesWithArray(list);
 //    debugger;
+    crazy_mario.xv -= gravity;
     if (!cb) {
-        var xv = crazy_mario.xv - 0.5, yv = global_speed;
-        crazy_mario.xv -= 0.5;
+        var xv = crazy_mario.xv, yv = global_speed;
         var y_step = 1, r = xv / yv;
 
         // attempt move with given speed
@@ -98,8 +108,10 @@ var mario_movement_classify = function (crazy_mario, list) {
         var collisions;
         // adjust y coordinate
         var c;
+        var original_x = crazy_mario.x;
         do {
-            crazy_mario.move( - Math.floor(r * (y_step - 1)) + Math.floor(r * y_step) , 1);
+            var x_offset = - Math.floor(r * (y_step - 1)) + Math.floor(r * y_step);
+            crazy_mario.move( x_offset , 1);
             c = crazy_mario.collidesWithArray(list);
             y_step ++;
             crazy_mario.update();
@@ -111,7 +123,14 @@ var mario_movement_classify = function (crazy_mario, list) {
             crazy_mario.move( - Math.floor(r * (y_step - 1)), 0);
             do {
                 crazy_mario.move(f * 2 - 1, 0);
-            } while (!crazy_mario.collidesWithArray(blocks.list));
+                var cbb = crazy_mario.collidesWithArray(blocks.list);
+                if (cbb) {
+                    var type = collision_type(crazy_mario, cbb);
+                    if (type != 'side') {
+                        break;
+                    }
+                }
+            } while (Math.abs(crazy_mario.x - original_x) < crazy_mario.xv);
             if (f) {
                 crazy_mario.xv = -1;
             } else {
@@ -119,8 +138,6 @@ var mario_movement_classify = function (crazy_mario, list) {
             }
         }
     } else {
-//        console.log(cb);
-//        debugger;
         var type = collision_type(crazy_mario, cb);
         switch (type) {
             case "top":
@@ -136,5 +153,4 @@ var mario_movement_classify = function (crazy_mario, list) {
         crazy_mario.applyXVelocity();
     }
     crazy_mario.update();
-
 };
