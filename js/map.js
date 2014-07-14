@@ -8,11 +8,15 @@ const blank = 0,
     bomb = 3,
     grass = 4;
 
+var height = 20;
+var jumpHeight = 5;
 var repeatFactor = 4;
-var denseFactor = 1;
+var repeatProbability = 0.2;
+var denseFactor = 0.6;
 var medicineFactor = 0.1;
-var blankFactor = 0.25;
+var blankFactor = 0.1;
 var bombFactor = 0.2;
+
 //size is an object with  property height and length; preMap is the map previously
 //return a newMap {height: some, length: some, mapContent: a two-dimension array}
 function generateMap(size, preMap) {
@@ -24,7 +28,7 @@ function generateMap(size, preMap) {
     var tempSomeLine = initializeSomeLine(height, 0);
     while(newMap.length < size.length){
         //repeat the previous line
-        if(currentPreMap.length > 0 && Math.floor(Math.random() * 4) == 0){
+        if(currentPreMap.length > 0 && Math.floor(Math.random() / repeatProbability) == 0){
             var repeatTime = Math.floor(Math.random() * repeatFactor) + 1;
             tempSomeLine = repeatLine(repeatTime, currentPreMap.mapContent[currentPreMap.length - 1]);
         }
@@ -39,21 +43,6 @@ function generateMap(size, preMap) {
         newMap.mapContent = newMap.mapContent.slice(0, size.length);
     }
     return newMap;
-}
-var run_once = 2;
-function bogus_generate_map(size, pre_map) {
-    var new_map = generateMap(size, pre_map);
-    for (var i = 0; i < new_map.length; i ++) {
-        for (var j = 0; j < new_map.height; j ++) {
-            new_map.mapContent[i][j] = (j == 2 ) || (j == 5);
-        }
-    }
-    if (run_once) {
-        new_map.mapContent[25][5] = 0;
-        run_once --;
-    }
-
-    return new_map;
 }
 
 function initializeSomeLine(height, length){
@@ -77,119 +66,73 @@ function repeatLine(repeatTime, repeatedArray){
                     result.mapContent[i][j] = blank;
                 }
             }
-            
         }
     }
     return result;
 }
+function lowestBlank(array){
+    var blankPosition = array.length;
+    for(var i = array.length - 1 ; i >= 0 ; i--){
+        if(array[i] == blank || array[i] == medicine){
+            blankPosition = i;
+        }
+    }
+    return blankPosition;
+}
 function randomOneLine(height, currentPreMap) {
     var caseNum = 3;
     var map = initializeSomeLine(height, 1);
-    while(true){
-        for (var i = 0; i < height; i++) {
-            (map.mapContent)[0][i] = blank;
-        }
-
-        if(Math.floor(Math.random() / blankFactor) == 0){
-            //do nothing
-        }else if(Math.floor(Math.random() * 3) > 0) {
-            //stones from ground to stoneNum
-                var stoneNum = Math.floor(Math.random() * height / 3 * 2);
-                for (var i = 0; i < stoneNum; i++) {
-                    (map.mapContent)[0][i] = stone;
-                }
-        }else{
-            //some random stones
-                for(var i = 0 ; i < height - 1 ; i++){
-                    if(Math.floor(Math.random() * Math.pow(2, i) / denseFactor) == 0){
-                        var stonePosition = Math.floor(Math.random() * height);
-                        (map.mapContent)[0][stonePosition] = stone;
-                    }
-                }
-        }
-
+    for (var i = 0; i < height; i++) {
+        (map.mapContent)[0][i] = blank;
+    }
+    if(currentPreMap.length == 0){
+        currentPreMap = initializeSomeLine(height, 1);
         for(var i = 0 ; i < height ; i++){
-            if(map.mapContent[0][i] == blank){
-                if((i == 0 && Math.floor(Math.random() / medicineFactor) == 0) 
-                    || (i > 0 && map.mapContent[0][i - 1] == stone && Math.floor(Math.random() / (medicineFactor * 2)) == 0)){
-                    map.mapContent[0][i] = medicine;
-                }
-            }
-        }
-
-
-        if(map.mapContent[0][height - 1] == stone || bomb){
-            map.mapContent[0][height - 1] = blank;
-        }
-        if(couldConnect(currentPreMap, map)){//Could I connect the line to currentPreMap?
-            return map;
+            currentPreMap.mapContent[0][i] = blank;
         }
     }
+    var preMapEndArray = currentPreMap.mapContent[currentPreMap.length - 1];
+    //some random stones
+    for(var i = 0 ; i < height - 1 ; i++){
+        if(Math.floor(Math.random() * Math.pow(2, i) / denseFactor) == 0){
+            var stonePosition = Math.floor(Math.random() * (height - 1));
+            (map.mapContent)[0][stonePosition] = stone;
+        }
+    }
+    //repeat pattern
+    for(var i = 0 ; i < height - 1 ; i++){
+        if(preMapEndArray[i] == stone && Math.floor(Math.random() * 2) == 0){
+            map.mapContent[0][i] = stone;
+        }
+    }
+    //jump some distance
+    for(var i = 0 ; i < height - 1 ; i++){
+        if(preMapEndArray[i] == stone && Math.floor(Math.random() * 4) == 0){
+            map.mapContent[0][(i + jumpHeight) % height] = stone;
+        }
+    }
+
+    for(var i = 0 ; i < height ; i++){
+        if(preMapEndArray[i] == blank || preMapEndArray[i] == medicine){
+            var preIndexOfi = (i + height - 1) % height;
+            if(preMapEndArray[preIndexOfi] == stone || preMapEndArray[preIndexOfi] == bomb){
+                map.mapContent[0][i] = blank;
+            }
+        }
+    }
+
+    for(var i = 0 ; i < height ; i++){
+        if(map.mapContent[0][i] == blank){
+            if((i == 0 && Math.floor(Math.random() / medicineFactor) == 0) 
+                || (i > 0 && map.mapContent[0][i - 1] == stone && Math.floor(Math.random() / (medicineFactor * 2)) == 0)){
+                map.mapContent[0][i] = medicine;
+            }
+        }
+    }
+    return map;
 }
 function getElementAt(map, x, y) {
     return (map.mapContent)[y][x];
-}
-//If one of map* is empty, return true.
-//If the blank or medicine blocks are connected, return true. otherwise return false.
-function couldConnect(map1, map2) {
-	if(map1.length == 0 || map2.length == 0){
-		return true;
-	}
-
-    var map1End = map1.mapContent[map1.length - 1];
-    var map2Start = map2.mapContent[0];
-    var tempConnect = [map1End.slice(), map2Start.slice()];
-    var height = map1.height;
-    var connectionBound = map1.height - 1;
-    var isValidConnect = true;
-    //mark -1 for blank and medicine
-    for(var i = 0 ; i < tempConnect.length ; i++){
-        for(var j = 0 ; j < height ; j++){
-            if(tempConnect[i][j] == blank || tempConnect[i][j] == medicine){
-                tempConnect[i][j] = 0;
-            }
-            else{
-                tempConnect[i][j] = 1;
-            }
-        }
-    }
-    //recursive depth first search
-    function markBlank(xPosition, yPosition){
-        if(tempConnect[1 - xPosition][yPosition] == 0){
-            tempConnect[1 - xPosition][yPosition] = -1;
-            markBlank(1 - xPosition, yPosition);
-        }
-        if(yPosition > 0 && tempConnect[xPosition][yPosition - 1] == 0){
-            tempConnect[xPosition][yPosition - 1] = -1;
-            markBlank(xPosition, yPosition - 1);
-        }
-        if(yPosition < connectionBound - 1 && tempConnect[xPosition][yPosition + 1] == 0){
-            tempConnect[xPosition][yPosition + 1] = -1;
-            markBlank(xPosition, yPosition + 1);
-        }
-    }
-    //mark -1 for first dfs
-    (function(){
-        for(var i = 0 ; i < tempConnect.length ; i++){
-            for(var j = 0 ; j < connectionBound ; j++){
-                if(tempConnect[i][j] == 0){
-                    tempConnect[i][j] = -1;
-                    markBlank(i, j);
-                    return;
-                }
-            }
-        }
-    })();
-    //If all the blanks are marked -1, return true
-    for(var i = 0 ; i < tempConnect.length ; i++){
-        for(var j = 0 ; j < connectionBound ; j++){
-            if(tempConnect[i][j] == 0){
-                isValidConnect = false;
-            }
-        }
-    }
-    
-    return isValidConnect;
 }
 
 function connectMap(map1, map2){
@@ -199,7 +142,7 @@ function connectMap(map1, map2){
 }
 
 function drawImage(map, canvas){
-    canvasContext = canvas.getContext("2d");
+    var canvasContext = canvas.getContext("2d");
     canvasContext.rotate(Math.PI / 2 * (1));
     canvasContext.scale(1,-1);
     var heightPerBlock = canvas.width / map.height;
@@ -214,8 +157,8 @@ function drawImage(map, canvas){
                 }
             }
         }
-    };
-    img.src = "./img/stone.jpg";
+    }
+    img.src = "./images/stone.png";
     var img2 = new Image;
     img2.onload = function(){
         var widthPerBlock = img2.width * heightPerBlock / img2.height;
@@ -227,7 +170,13 @@ function drawImage(map, canvas){
                 }
             }
         }
-    };
-    img2.src = "./img/medicine.jpg";
+    }
+    img2.src = "./images/medicine.png";
 }
-
+var newMap = initializeSomeLine(height,0);
+newMap = generateMap({height: height, length: 1000}, newMap);
+var canvas = $("#map");
+canvas.parent().css({"left": "95px"});
+canvas.attr("width", canvas.parent().width());
+canvas.attr("height", 2 * canvas.parent().height());
+drawImage(newMap, canvas.get(0));
