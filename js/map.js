@@ -8,18 +8,16 @@ const blank = 0,
     bomb = 3,
     grass = 4;
 
-var height = 20;
-var jumpHeight = 5;
-var jumpFactor = 0.8;
-var hardFactor1 = 5;
-var hardFactor2 = 4;
-var denseFactor = 0.75;
+var jumpHeight = 4;
+var hardFactor1 = 6;
+var hardFactor2 = 8;
+var denseFactor = 2;
 var medicineFactor = 0.1;
 
 //size is an object with  property height and length; preMap is the map previously
 //return a newMap {height: some, length: some, mapContent: a two-dimension array}
 function generateMap(size, preMap) {
-	var currentPreMap = initializeSomeLine(size.height, 1);
+    var currentPreMap = initializeSomeLine(size.height, 1);
     var height = preMap.height;
     if(preMap.length > 0){
         currentPreMap.mapContent[0] = preMap.mapContent[preMap.length - 1].slice();
@@ -31,12 +29,12 @@ function generateMap(size, preMap) {
             }
         }
     }
-	var newMap = initializeSomeLine(height, 0);
+    var newMap = initializeSomeLine(height, 0);
     //one line for each loop
     while(newMap.length < size.length){
         var tempSomeLine = randomLines(height, currentPreMap);
-    	newMap = connectMap(newMap, tempSomeLine);
-    	currentPreMap = tempSomeLine;
+        newMap = connectMap(newMap, tempSomeLine);
+        currentPreMap = tempSomeLine;
     }
     if(newMap.length > size.length){
         newMap.length = size.length;
@@ -95,46 +93,48 @@ function randomLines(height, currentPreMap) {
     var map1 = initializeSomeLine(height, 1);
     if(currentPreMap.length > 0){
         map1.mapContent[0] = currentPreMap.mapContent[currentPreMap.length - 1].slice();
-    }    
-
-    //jump some distance
+    }
     var tempEnd = endArray(map1);
     map2 = initializeSomeLine(height, 1);
-    for(var i = 0 ; i < height - 1 ; i++){
-        if(map1.mapContent[0][i] == stone){
-            var top = Math.min(i + jumpHeight, height - 2);
-            setValue(map2, 0, top, stone);
-            for(var j = i + 1 ; j <= top + 1 ; j++){
-                setValue(map1, 0, j, blank);
-            }
-        }
-    }
+    //random generate
     for(var i = 0 ; i < height - 1 ; i++){
         if(Math.floor(Math.random() * Math.pow(2, i) / denseFactor) == 0){
             var stonePosition = Math.floor(Math.random() * height);
             setValue(map2, 0, stonePosition, stone);
         }
     }
+    //jump some distance
+    
+    for(var i = 0 ; i < height - 1 ; i++){
+        if(map1.mapContent[0][i] == stone){
+            var top = Math.min(i + jumpHeight, height - 2);
+            setValue(map2, 0, top, stone);
+            setValue(map2, 0, top + 1, blank);
+            for(var j = i + 1 ; j <= Math.min(height - 1, top + 2) ; j++){
+                setValue(map1, 0, j, blank);
+            }
+        }
+    }
     //repeat pattern
     var map = connectMap(repeatLine(hardFactor1 - map1.length, endArray(map1)), repeatLine(hardFactor2 - map2.length, endArray(map2)));
     //No blocks
-     for(var i0 = 1 ; i0 < map.length ; i0++){
-        for(var i = 0 ; i < height ; i++){
-            var preArray = map.mapContent[i0 - 1];
-            if(i > 0 && (preArray[i] == blank || preArray[i] == medicine)){
-                if(preArray[i - 1] == stone || preArray[i - 1] == bomb){
-                    map.mapContent[i0][i] = blank;
+    for(var i = 1 ; i < map.length ; i++){
+        var preArray = map.mapContent[i - 1];
+        for(var j = 0 ; j < height ; j++){          
+            if(j > 0 && (preArray[j] == blank || preArray[j] == medicine)){
+                if(preArray[j - 1] == stone || preArray[j - 1] == bomb){
+                    setValue(map, i, j, blank);
                 }
             }
         }
     }
     //add medicine
-    for(var i0 = 0 ; i0 < map.length ; i0++){
-        for(var i = 0 ; i < height ; i++){
-            if(map.mapContent[i0][i] == blank){
-                if((i == 0 && Math.floor(Math.random() / medicineFactor * 5) == 0) 
-                    || (i > 0 && map.mapContent[i0][i - 1] == stone && Math.floor(Math.random() / medicineFactor) == 0)){
-                    map.mapContent[i0][i] = medicine;
+    for(var i = 0 ; i < map.length ; i++){
+        for(var j = 0 ; j < height ; j++){
+            if(map.mapContent[i][j] == blank){
+                if((j == 0 && Math.floor(Math.random() / medicineFactor * 5) == 0) 
+                    || (j > 0 && map.mapContent[i][j - 1] == stone && Math.floor(Math.random() / medicineFactor) == 0)){
+                    map.mapContent[i][j] = medicine;
                 }
             }
         }
@@ -146,8 +146,7 @@ function getElementAt(map, x, y) {
 }
 
 function connectMap(map1, map2){
-	var newMap = initializeSomeLine(map1.height, map1.length + map2.length);
+    var newMap = initializeSomeLine(map1.height, map1.length + map2.length);
     newMap.mapContent = map1.mapContent.concat(map2.mapContent);
     return newMap;
 }
-
