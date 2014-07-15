@@ -141,42 +141,4 @@ function connectMap(map1, map2){
     return newMap;
 }
 
-function drawImage(map, canvas){
-    var canvasContext = canvas.getContext("2d");
-    canvasContext.rotate(Math.PI / 2 * (1));
-    canvasContext.scale(1,-1);
-    var heightPerBlock = canvas.width / map.height;
-    var img = new Image;
-    img.onload = function(){
-        var widthPerBlock = img.width * heightPerBlock / img.height;
 
-        for(var i = 0 ; i < map.length ; i++){
-            for(var j = 0 ; j < map.height ; j++){
-                if(map.mapContent[i][j] == stone){
-                    canvasContext.drawImage(img, i * widthPerBlock, j * heightPerBlock, widthPerBlock, heightPerBlock);
-                }
-            }
-        }
-    }
-    img.src = "./images/stone.png";
-    var img2 = new Image;
-    img2.onload = function(){
-        var widthPerBlock = img2.width * heightPerBlock / img2.height;
-
-        for(var i = 0 ; i < map.length ; i++){
-            for(var j = 0 ; j < map.height ; j++){
-                if(map.mapContent[i][j] == medicine){
-                    canvasContext.drawImage(img2, i * widthPerBlock, j * heightPerBlock, widthPerBlock, heightPerBlock);
-                }
-            }
-        }
-    }
-    img2.src = "./images/medicine.png";
-}
-var newMap = initializeSomeLine(height,0);
-newMap = generateMap({height: height, length: 1000}, newMap);
-var canvas = $("#map");
-canvas.parent().css({"left": "95px"});
-canvas.attr("width", canvas.parent().width());
-canvas.attr("height", 2 * canvas.parent().height());
-drawImage(newMap, canvas.get(0));
