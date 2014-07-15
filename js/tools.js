@@ -1,8 +1,6 @@
 /**
  * Created by Travis on 2014/7/12.
  */
-var current_progress = 0;
-
 var init = function () {
     medicine_sound = document.getElementById("soundEfx");
 
@@ -54,8 +52,9 @@ var refresh_map = function () {
     current_progress += get_current_global_speed();
 };
 var restart = function () {
+//    debugger;
     crazy_mario.setX(screen_w);
-    crazy_mario.setY(mario_init_y);
+//    crazy_mario.setY(mario_init_y);
     crazy_mario.xv = 0;
     crazy_mario.yv = 0;
 };
@@ -90,14 +89,32 @@ var valuable_blocks = function (crazy_mario, blocks) {
 };
 
 var get_current_global_speed = function () {
-    var s = Math.max(0, Math.floor(ticker.currentTick / speed_mutation_period) * speed_mutation_range
-        - medicine_collected * medicine_efficacy ) + global_speed;
-    return Math.min(s, max_global_speed);
+    var s;
+    // rush check
+    if (crazy_mario.y < rush_boundary) {
+        rush_flag = true;
+//        console.log("rush flag to true: " + crazy_mario.y);
+        s = max_global_speed;
+    } else {
+        if (crazy_mario.y < mario_init_y && rush_flag) {
+            s = max_global_speed;
+        } else {
+            if (crazy_mario.y >= mario_init_y) {
+                rush_flag = false;
+//                console.log("rush flag to false: " + crazy_mario.y);
+            }
+            s = Math.max(0, Math.floor(ticker.currentTick / speed_mutation_period) * speed_mutation_range
+                - medicine_collected * medicine_efficacy ) + global_speed;
+            s = Math.min(s, max_global_speed);
+        }
+    }
+    return s;
 };
 
 var get_current_shift = function () {
-    return Math.floor((get_current_global_speed() - global_speed) / shift_span);
-}
+    var s = Math.floor((get_current_global_speed() - global_speed) / shift_span);
+    return Math.min(4,s);
+};
 
 // init map
 var init_map = function () {
@@ -105,9 +122,10 @@ var init_map = function () {
     draw_map();
 };
 var extend_map = function () {
-    map = generateMap({height: map_height, length: map_growth + map.length}, map);
+    map = generateMap({height: map_height, length: map_growth}, map);
+
     // add the extended part of the map to the blocks
-    for (var i = map.length - map_growth; i < map.length; i ++) {
+    for (var i = 0; i < map.length; i ++) {
         for (var j = 0; j < map.height; j ++) {
             var type = getElementAt(map, j, i);
             if (!type) continue;
@@ -117,7 +135,7 @@ var extend_map = function () {
             } else if (2 == type) {
                 block = scene.Sprite('images/medicine.png');
             }
-            block.position(j * block_size[1], i * block_size[0] - current_progress);
+            block.position(j * block_size[1], (i + map_count * map_growth) * block_size[0] - current_progress );
 //            block.scale(block_size[0] / stone_img_size[0]);
             if (1 == type) {
                 blocks.add(block);
@@ -126,12 +144,13 @@ var extend_map = function () {
             }
         }
     }
+    map_count ++;
 };
 
 var draw_map = function () {
     // if map end is nigh, extend the original map
 //    console.log("map length: " + map.length + "; progress: " + current_progress + "; buffer " + map_buffer_size);
-    if (map.length < current_progress / block_size[0] + map_buffer_size) {
+    if (map_count * map_growth < current_progress / block_size[0] + map_buffer_size) {
         extend_map();
     }
     update_blocks();
