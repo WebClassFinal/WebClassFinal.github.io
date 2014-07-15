@@ -125,7 +125,7 @@ var update_mario_speed = function () {
 var mario_movement_classify = function (crazy_mario, list) {
     var cb = crazy_mario.collidesWithArray(list);
     if (!cb) {
-        var xv = crazy_mario.xv, yv = get_current_global_speed();
+        var xv = crazy_mario.xv, yv = get_current_global_speed() * (rush_flag ? rush_speed_ratio : 1);
         var y_step = 1, r = xv / yv;
 
         // attempt move with given speed
@@ -187,7 +187,11 @@ var update_mario_head = function () {
     var s = get_current_shift();
     if (s != curr_shift) {
         curr_shift = s;
-        mario_head.loadImg('images/baozou/' + s + '.png');
+        change_head_to(s);
     }
-    mario_head.position(crazy_mario.x + head_relative_shift[0] * mario_scale, crazy_mario.y).update();
+    mario_head.position(crazy_mario.x + head_relative_shift[0] * mario_scale, crazy_mario.y + head_relative_shift[1]).update();
 };
+
+var change_head_to = function (shift) {
+    mario_head.loadImg('images/baozou/' + shift + '.png', true).update();
+}
