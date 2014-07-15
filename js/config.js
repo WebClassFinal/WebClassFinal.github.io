@@ -10,7 +10,7 @@ var screen_w = screen.width;
 var stone_img_size = [21,21];
 var block_size = [21,21]; // w, h
 var mario_size = [18,27];
-var jump_speed = 6;
+var jump_speed = 8;
 var global_speed = 3;
 var speed_mutation_period = 1000;
 var speed_mutation_range = 0.3;
@@ -33,7 +33,7 @@ var medicine_collected = 0;
 var medicine_efficacy = 2;
 
 var materials = [
-    'images/mario_8_bit.png',
-    'images/stone.png',
-    'images/medicine.png'
+    'IMAGES/mario_8_bit.png',
+    'IMAGES/stone.png',
+    'IMAGES/medicine.png'
 ];

@@ -281,7 +281,7 @@ Scene.prototype.Ticker = function Ticker(paint, options) {
 };
 
 Scene.prototype.loadImages = function loadImages(images, callback) {
-    // function used to preload the sprite images
+    // function used to preload the sprite IMAGES
     if (!callback) {
         callback = this.main;
     }
@@ -870,7 +870,7 @@ Sprite.prototype.canvasUpdate = function canvasUpdate(layer) {
         ctx.fillStyle = this.color;
         ctx.fillRect(0, 0, this.w, this.h);
     }
-    // handle repeating images, a way to implement repeating background in canvas
+    // handle repeating IMAGES, a way to implement repeating background in canvas
     if (this.imgLoaded && this.img) {
         if (this.imgNaturalWidth < this.w || this.imgNaturalHeight < this.h) {
             repeat_w = Math.floor(this.w / this.imgNaturalWidth);
