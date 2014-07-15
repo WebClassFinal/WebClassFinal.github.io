@@ -1,139 +1,27 @@
-/** 
-* Created by Paul on 2014/7/15
-*/
-
-const blank = 0,
-    stone = 1,
-    medicine = 2,
-    bomb = 3,
-    grass = 4;
-
-var jumpHeight = 4;
-var hardFactor1 = 6;
-var hardFactor2 = 8;
-var denseFactor = 2;
-var medicineFactor = 0.1;
-
-//size is an object with  property height and length; preMap is the map previously
-//return a newMap {height: some, length: some, mapContent: a two-dimension array}
 function generateMap(size, preMap) {
-    var currentPreMap = initializeSomeLine(size.height, 1);
-    var height = preMap.height;
-    if(preMap.length > 0){
-        currentPreMap.mapContent[0] = preMap.mapContent[preMap.length - 1].slice();
+    var height = size.height,
+        length = size.length;
+    var map = initializeMap(height, 0);
+    map = connectMap(map, templateMap(height, 3));
+    while (map.length < length) {
+        map = connectMap(map, templateMap(height));
     }
-    else{
-        for(var i = 0 ; i < height ; i++){
-            if(Math.floor(Math.random() * 2) > 0){
-                currentPreMap.mapContent[0][i] = stone;
-            }
-        }
-    }
-    var newMap = initializeSomeLine(height, 0);
-    //one line for each loop
-    while(newMap.length < size.length){
-        var tempSomeLine = randomLines(height, currentPreMap);
-        newMap = connectMap(newMap, tempSomeLine);
-        currentPreMap = tempSomeLine;
-    }
-    if(newMap.length > size.length){
-        newMap.length = size.length;
-        newMap.mapContent = newMap.mapContent.slice(0, size.length);
-    }
-    return newMap;
-}
-
-function initializeSomeLine(height, length){
-    var result = {
-        height: height,
-        length: length,
-        mapContent: new Array(length)
-    };
-    for(var i = 0 ; i < length ; i++){
-        result.mapContent[i] = new Array(height);
-    }
-    for(var i = 0 ; i < length ; i++){
-        for(var j = 0 ; j < height ; j++){
-            result.mapContent[i][j] = blank;
-        }
-    }
-    return result;
-}
-function repeatLine(repeatTime, repeatedArray){
-    var result = initializeSomeLine(repeatedArray.length, Math.max(0, repeatTime));
-    for(var i = 0 ; i < repeatTime ; i++){
-        result.mapContent[i] = repeatedArray.slice();
-        for(var j = 0 ; j < repeatedArray.length ; j++){
-            if(result.mapContent[i][j] != stone){
-                if(Math.floor(Math.random() * 10) > 0){
-                    result.mapContent[i][j] = blank;
-                }
-            }
-        }
-    }
-    return result;
-}
-function endArray(map){
-    return map.mapContent[map.length - 1].slice();
-}
-function setValue(map, xPosition, yPosition, value){
-    map.mapContent[xPosition][yPosition] = value;
-}
-function lowestBlank(array){
-    var blankPosition = array.length;
-    for(var i = array.length - 1 ; i >= 0 ; i--){
-        if(array[i] == blank || array[i] == medicine){
-            blankPosition = i;
-        }
-    }
-    return blankPosition;
-}
-function randomLines(height, currentPreMap) {
-
-    var map1 = initializeSomeLine(height, 1);
-    if(currentPreMap.length > 0){
-        map1.mapContent[0] = currentPreMap.mapContent[currentPreMap.length - 1].slice();
-    }
-    var tempEnd = endArray(map1);
-    map2 = initializeSomeLine(height, 1);
-    //random generate
-    for(var i = 0 ; i < height - 1 ; i++){
-        if(Math.floor(Math.random() * Math.pow(2, i) / denseFactor) == 0){
-            var stonePosition = Math.floor(Math.random() * height);
-            setValue(map2, 0, stonePosition, stone);
-        }
-    }
-    //jump some distance
-    
-    for(var i = 0 ; i < height - 1 ; i++){
-        if(map1.mapContent[0][i] == stone){
-            var top = Math.min(i + jumpHeight, height - 2);
-            setValue(map2, 0, top, stone);
-            setValue(map2, 0, top + 1, blank);
-            for(var j = i + 1 ; j <= Math.min(height - 1, top + 2) ; j++){
-                setValue(map1, 0, j, blank);
-            }
-        }
-    }
-    //repeat pattern
-    var map = connectMap(repeatLine(hardFactor1 - map1.length, endArray(map1)), repeatLine(hardFactor2 - map2.length, endArray(map2)));
-    //No blocks
-    for(var i = 1 ; i < map.length ; i++){
-        var preArray = map.mapContent[i - 1];
-        for(var j = 0 ; j < height ; j++){          
-            if(j > 0 && (preArray[j] == blank || preArray[j] == medicine)){
-                if(preArray[j - 1] == stone || preArray[j - 1] == bomb){
-                    setValue(map, i, j, blank);
-                }
-            }
-        }
+    if (map.length > length) {
+        map.length = length;
+        map.mapContent = map.mapContent.slice(0, length);
     }
     //add medicine
-    for(var i = 0 ; i < map.length ; i++){
-        for(var j = 0 ; j < height ; j++){
-            if(map.mapContent[i][j] == blank){
-                if((j == 0 && Math.floor(Math.random() / medicineFactor * 5) == 0) 
-                    || (j > 0 && map.mapContent[i][j - 1] == stone && Math.floor(Math.random() / medicineFactor) == 0)){
+    for (var i = 0; i < length; i++) {
+        for (var j = 0; j < height; j++) {
+            if (j > 0 && map.mapContent[i][j] == blank && map.mapContent[i][j - 1] == stone) {
+                //Medicine in the first layer is not very possible; second layer and third layer very possible
+                if (j == firstLayerPosition + 1 && Math.floor(Math.random() / medicineFactor * 5) == 0) {
+                    map.mapContent[i][j] = medicine;
+                }
+                if (j == secondLayerPosition + 1 && Math.floor(Math.random() / medicineFactor) == 0) {
+                    map.mapContent[i][j] = medicine;
+                }
+                if (j == thirdLayerPosition + 1 && Math.floor(Math.random() / medicineFactor * 2) == 0) {
                     map.mapContent[i][j] = medicine;
                 }
             }
@@ -141,12 +29,119 @@ function randomLines(height, currentPreMap) {
     }
     return map;
 }
+
 function getElementAt(map, x, y) {
     return (map.mapContent)[y][x];
 }
 
-function connectMap(map1, map2){
-    var newMap = initializeSomeLine(map1.height, map1.length + map2.length);
+function connectMap(map1, map2) {
+    var newMap = initializeMap(map1.height, map1.length + map2.length);
     newMap.mapContent = map1.mapContent.concat(map2.mapContent);
     return newMap;
 }
+
+function initializeMap(height, length) {
+    var result = {
+        height: height,
+        length: length,
+        mapContent: new Array(length)
+    };
+    for (var i = 0; i < length; i++) {
+        result.mapContent[i] = new Array(height);
+    }
+    for (var i = 0; i < length; i++) {
+        for (var j = 0; j < height; j++) {
+            result.mapContent[i][j] = blank;
+        }
+    }
+    return result;
+}
+
+function setValue(map, xPosition, yPosition, value) {
+    map.mapContent[xPosition][yPosition] = value;
+}
+
+function templateMap(height, templateNum) {
+    var randomIndex = Math.floor(Math.random() * map_template.length);
+    if (typeof arguments[1] != "undefined") {
+        randomIndex = templateNum;
+    }
+    console.log("oo");
+    console.log(randomIndex);
+    var template = map_template[randomIndex];
+    var map = initializeMap(height, template.length);
+    for (var i = 0; i < map.length; i++) {
+        setValue(map, i, firstLayerPosition, template.firstLayer[i]);
+        setValue(map, i, secondLayerPosition, template.secondLayer[i]);
+        setValue(map, i, thirdLayerPosition, template.thirdLayer[i]);
+    }
+    return map;
+}
+
+var blank = 0;
+var stone = 1;
+var medicine = 2;
+var firstLayerPosition = 0;
+var secondLayerPosition = 4;
+var thirdLayerPosition = 8;
+
+var medicineFactor = 0.15;
+
+var map_template1 = {
+    length: 30,
+    firstLayer: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    secondLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+};
+
+var map_template2 = {
+    length: 40,
+    firstLayer: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+    secondLayer: [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+};
+
+var map_template3 = {
+    length: 10,
+    firstLayer: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    secondLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+};
+var map_template4 = {
+    length: 10,
+    firstLayer: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    secondLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+};
+var map_template5 = {
+    length: 10,
+    firstLayer: [1, 1, 1, 1, 0, 1, 1, 0, 1, 1],
+    secondLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+};
+var map_template6 = {
+    length: 10,
+    firstLayer: [1, 0, 1, 1, 1, 1, 1, 0, 1, 1],
+    secondLayer: [1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+};
+var map_template7 = {
+    length: 10,
+    firstLayer: [1, 1, 1, 0, 0, 1, 1, 0, 1, 1],
+    secondLayer: [0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+};
+
+var map_template8 = {
+    length: 30,
+    firstLayer: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    secondLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+};
+var map_template9 = {
+    length: 50,
+    firstLayer: [1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    secondLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+};
+var map_template = [map_template1, map_template2, map_template3, map_template4, map_template5, map_template6, map_template7, map_template8, map_template9];
