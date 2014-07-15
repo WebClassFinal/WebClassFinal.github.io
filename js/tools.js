@@ -20,7 +20,7 @@ var init = function () {
         cycle = scene.Cycle(positions);
 
         // create mario and set movements
-        crazy_mario = scene.Sprite('IMAGES/mario_8_bit.png');
+        crazy_mario = scene.Sprite('images/mario_8_bit.png');
         crazy_mario.size(mario_size[0],mario_size[1]);
         cycle.addSprite(crazy_mario);
         cycle.update();
@@ -103,9 +103,9 @@ var extend_map = function () {
             if (!type) continue;
             var block;
             if (1 == type) {
-                block = scene.Sprite('IMAGES/stone.png');
+                block = scene.Sprite('images/stone.png');
             } else if (2 == type) {
-                block = scene.Sprite('IMAGES/medicine.png');
+                block = scene.Sprite('images/medicine.png');
             }
             block.position(j * block_size[1], i * block_size[0] - current_progress);
             if (1 == type) {

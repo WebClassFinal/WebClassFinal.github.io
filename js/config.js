@@ -33,7 +33,7 @@ var medicine_collected = 0;
 var medicine_efficacy = 2;
 
 var materials = [
-    'IMAGES/mario_8_bit.png',
-    'IMAGES/stone.png',
-    'IMAGES/medicine.png'
+    'images/mario_8_bit.png',
+    'images/stone.png',
+    'images/medicine.png'
 ];
