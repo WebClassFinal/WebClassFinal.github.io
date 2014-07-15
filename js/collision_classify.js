@@ -9,21 +9,21 @@ var in_range = function (start1, span1, start2, span2) {
     return ((start1 + span1) >= start2) && ((start2 + span2) >= start1);
 };
 var side_collision = function (crazy_mario, block) {
-    return in_range(crazy_mario.y + mario_size[0], 0, block.y, border) && in_range(crazy_mario.x, block.x, mario_size[1], block_size[1]);
+    return in_range(crazy_mario.y + mario_image_size[0], 0, block.y, border) && in_range(crazy_mario.x, block.x, mario_image_size[1], block_size[1]);
 };
 
 // mario collides with the bottom surface of the blocks
 // @param:  list : [block1, block2,...,]
 //          crazy_mario: sprite
 var upward_collision = function (crazy_mario, block) {
-    return in_range(crazy_mario.x + mario_size[1], 0, block.x, border) && in_range(crazy_mario.y, block.y, mario_size[0], block_size[0]);
+    return in_range(crazy_mario.x + mario_image_size[1], 0, block.x, border) && in_range(crazy_mario.y, block.y, mario_image_size[0], block_size[0]);
 };
 
 // mario collides with the top surface of the blocks
 // @param:  list : [block1, block2,...,]
 //          crazy_mario: sprite
 var bottom_collision = function (crazy_mario, block) {
-    return in_range(crazy_mario.x, 0, block.x + block_size[1], border) && in_range(crazy_mario.y, block.y, mario_size[0], block_size[0]);
+    return in_range(crazy_mario.x, 0, block.x + block_size[1], border) && in_range(crazy_mario.y, block.y, mario_image_size[0], block_size[0]);
 };
 
 // return an array of size 3
@@ -80,6 +80,7 @@ var eat_medicine = function () {
         medicines.remove(m);
         medicine_collected ++;
         eat_medicine_sound();
+//        global_speed - medicine_efficacy;
     }
 };
 
@@ -93,14 +94,14 @@ var step_away_beneath = function (crazy_mario, list) {
 
 var collision_type = function (crazy_mario, block) {
     if (crazy_mario.xv > 0) {
-        var x0 = crazy_mario.x + mario_size[1], y0 = crazy_mario.y + mario_size[0];
+        var x0 = crazy_mario.x + mario_image_size[1], y0 = crazy_mario.y + mario_image_size[0];
         if ((block.x - x0) * crazy_mario.yv - crazy_mario.xv * (block.y - y0) > 0) {
             return "bottom";
         } else {
             return "side";
         }
     } else if (crazy_mario.xv < 0){
-        var x0 = crazy_mario.x, y0 = crazy_mario.y + mario_size[0];
+        var x0 = crazy_mario.x, y0 = crazy_mario.y + mario_image_size[0];
         if ((block.x + block_size[0] - x0) * crazy_mario.yv - crazy_mario.xv * (block.y - y0) > 0) {
             return "side";
         } else {
@@ -146,7 +147,7 @@ var mario_movement_classify = function (crazy_mario, list) {
             crazy_mario.move( - Math.floor(r * (y_step - 1)), 0);
             do {
                 crazy_mario.move(f * 2 - 1, 0);
-                var cbb = crazy_mario.collidesWithArray(blocks.list);
+                var cbb = crazy_mario.collidesWithArray(list);
                 if (cbb) {
                     var type = collision_type(crazy_mario, cbb);
                     if (type != 'side') {
@@ -179,4 +180,14 @@ var mario_movement_classify = function (crazy_mario, list) {
         crazy_mario.applyXVelocity();
     }
     crazy_mario.update();
+    update_mario_head();
+};
+
+var update_mario_head = function () {
+    var s = get_current_shift();
+    if (s != curr_shift) {
+        curr_shift = s;
+        mario_head.loadImg('images/baozou/' + s + '.png');
+    }
+    mario_head.position(crazy_mario.x + head_relative_shift[0] * mario_scale, crazy_mario.y).update();
 };

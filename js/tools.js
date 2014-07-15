@@ -12,16 +12,18 @@ var init = function () {
     // ready, the callback function is called.
     scene.loadImages(materials, function() {
 
+        ticker = scene.Ticker(paint);
         // define the walking movements of mario
         var positions = [];
         for (var i = 0; i < 20; i++) {
-            positions.push([i * 21 + 1, 13, 5]);
+            positions.push([i * 21 + 1, 13 + mario_bottom_margin, 5]);
         }
         cycle = scene.Cycle(positions);
 
         // create mario and set movements
         crazy_mario = scene.Sprite('images/mario_8_bit.png');
-        crazy_mario.size(mario_size[0],mario_size[1]);
+        crazy_mario.size(mario_image_size[0],mario_image_size[1] + mario_bottom_margin);
+        crazy_mario.scale(mario_width / mario_image_size[0]);
         cycle.addSprite(crazy_mario);
         cycle.update();
 
@@ -30,7 +32,10 @@ var init = function () {
         crazy_mario.rotate(Math.PI / 2);
         crazy_mario.update();
 
-        ticker = scene.Ticker(paint);
+        mario_head = scene.Sprite('images/baozou/1.png');
+        mario_head.rotate(Math.PI / 2);
+        update_mario_head();
+
         init_map();
         create_listeners();
         ticker.run();
@@ -62,7 +67,7 @@ var paint = function () {
     refresh_map();
 
     // return to the top if Mario falls down or goes beyond the border
-    if (crazy_mario.x + mario_size[1] < 0 || crazy_mario.y< 0) {
+    if (crazy_mario.x + mario_image_size[1] < 0 || crazy_mario.y< 0) {
         restart();
     }
 
@@ -76,7 +81,7 @@ var valuable_blocks = function (crazy_mario, blocks) {
     var mx = crazy_mario.x, my = crazy_mario.y;
     for (var i = 0; i < blocks.list.length; i ++) {
         var b = blocks.list[i];
-        if (Math.abs(b.x - mx) > block_size[0] * 3 || Math.abs(b.y - my) > block_size[1] * 3) {
+        if (Math.abs(b.x - mx) > neighbourhood_size || Math.abs(b.y - my) > neighbourhood_size) {
             continue;
         }
         vb.push(b);
@@ -85,9 +90,14 @@ var valuable_blocks = function (crazy_mario, blocks) {
 };
 
 var get_current_global_speed = function () {
-    return Math.max(0, Math.floor(ticker.currentTick / speed_mutation_period) * speed_mutation_range
+    var s = Math.max(0, Math.floor(ticker.currentTick / speed_mutation_period) * speed_mutation_range
         - medicine_collected * medicine_efficacy ) + global_speed;
+    return Math.min(s, max_global_speed);
 };
+
+var get_current_shift = function () {
+    return Math.floor((get_current_global_speed() - global_speed) / shift_span);
+}
 
 // init map
 var init_map = function () {
@@ -108,6 +118,7 @@ var extend_map = function () {
                 block = scene.Sprite('images/medicine.png');
             }
             block.position(j * block_size[1], i * block_size[0] - current_progress);
+//            block.scale(block_size[0] / stone_img_size[0]);
             if (1 == type) {
                 blocks.add(block);
             } else {
