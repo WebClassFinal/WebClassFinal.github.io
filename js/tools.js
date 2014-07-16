@@ -33,47 +33,43 @@ var init = function() {
         });
         startButton.prependTo($("#startFace"));
         helpButton.prependTo($("#startFace"));
-        startButton.click(start_game);
-        startButton.tap(start_game);
+        startButton.click(function() {
+            $("#startFace").remove();
+
+            ticker = scene.Ticker(paint);
+            // define the walking movements of mario
+            var positions = [];
+            for (var i = 0; i < 20; i++) {
+                positions.push([i * 21 + 1, 13 + mario_bottom_margin, 5]);
+            }
+            cycle = scene.Cycle(positions);
+
+            // create mario and set movements
+            crazy_mario = scene.Sprite('images/mario_8_bit.png');
+            crazy_mario.size(mario_image_size[0], mario_image_size[1] + mario_bottom_margin);
+            crazy_mario.scale(mario_width / mario_image_size[0]);
+            cycle.addSprite(crazy_mario);
+            cycle.update();
+
+            // various transformations
+            crazy_mario.position(screen_w, mario_init_y);
+            crazy_mario.rotate(Math.PI / 2);
+            crazy_mario.update();
+
+            mario_head = scene.Sprite('images/baozou/1.png');
+            mario_head.rotate(Math.PI / 2);
+            update_mario_head();
+
+            init_map();
+            create_listeners();
+            ticker.run();
+        });
     });
 };
 
-var start_game = function () {
-    console.log("click");
-    $("#startFace").remove();
-
-    ticker = scene.Ticker(paint);
-    // define the walking movements of mario
-    var positions = [];
-    for (var i = 0; i < 20; i++) {
-        positions.push([i * 21 + 1, 13 + mario_bottom_margin, 5]);
-    }
-    cycle = scene.Cycle(positions);
-
-    // create mario and set movements
-    crazy_mario = scene.Sprite('images/mario_8_bit.png');
-    crazy_mario.size(mario_image_size[0], mario_image_size[1] + mario_bottom_margin);
-    crazy_mario.scale(mario_width / mario_image_size[0]);
-    cycle.addSprite(crazy_mario);
-    cycle.update();
-
-    // various transformations
-    crazy_mario.position(screen_w, mario_init_y);
-    crazy_mario.rotate(Math.PI / 2);
-    crazy_mario.update();
-
-    mario_head = scene.Sprite('images/baozou/1.png');
-    mario_head.rotate(Math.PI / 2);
-    update_mario_head();
-
-    init_map();
-    create_listeners();
-    ticker.run();
-}
-
 var create_listeners = function() {
     body = $('body');
-    body.mousedown(function() {
+    body.touchstart(function() {
         jump_collision_classify(crazy_mario, blocks.list);
     });
 };
@@ -152,21 +148,6 @@ var init_map = function() {
     extend_map();
     draw_map();
 };
-
-var generate_clouds = function (height, length) {
-    for (var i = 0; i < Math.random() * 3 + 3; i ++) {
-        var cloud = scene.Sprite('images/cloud.png');
-        var y = (Math.random() * length + map_count * map_growth) * block_size[0] - current_progress;
-        var x = (height - 2 - Math.random() * 4) * block_size[1];
-        cloud.position(x, y);
-        cloud.yv = - get_current_global_speed() / 2;
-        cloud.applyYVelocity();
-        cloud.rotate(Math.PI / 2);
-        cloud.update();
-        clouds.add(cloud);
-    }
-};
-
 var extend_map = function() {
     map = generateMap({
         height: map_height,
@@ -183,7 +164,6 @@ var extend_map = function() {
                 block = scene.Sprite('images/stone.png');
             } else if (2 == type) {
                 block = scene.Sprite('images/medicine.png');
-                block.rotate(Math.PI / 2);
             }
             block.position(j * block_size[1], (i + map_count * map_growth) * block_size[0] - current_progress);
             //            block.scale(block_size[0] / stone_img_size[0]);
@@ -203,13 +183,10 @@ var draw_map = function() {
     if (map_count * map_growth < current_progress / block_size[0] + map_buffer_size) {
         extend_map();
     }
-    if (clouds.length == 0 || clouds.list[clouds.length - 1].y < screen_h) {
-        generate_clouds(map_height, map_growth);
-    }
     update_blocks();
     update_medicines();
     update_scores();
-    update_clouds();
+
     //    console.log(blocks.length + ": " + medicines.length);
 };
 
@@ -228,7 +205,7 @@ var update_medicines = function() {
             obj.update();
         }
     }
-};
+}
 
 var update_blocks = function() {
 
@@ -242,30 +219,6 @@ var update_blocks = function() {
             i--;
         } else {
             obj.yv = -get_current_global_speed();
-            obj.applyYVelocity();
-            obj.update();
-        }
-    }
-};
-
-var update_mario_speed = function () {
-    if (crazy_mario.xv > - max_falling_speed)
-    {
-        crazy_mario.xv -= gravity;
-        crazy_mario.applyXVelocity();
-    }
-};
-
-var update_clouds = function () {
-    for (var i = 0; i < clouds.length; i ++) {
-        var obj = clouds.list[i];
-        // if cloud goes beyond the map, eliminate it
-        if (obj.y < -cloud_image_size[0]) {
-            obj.remove();
-            clouds.remove(obj);
-            i--;
-        } else {
-            obj.yv = -get_current_global_speed() / 2;
             obj.applyYVelocity();
             obj.update();
         }

@@ -42,6 +42,9 @@ var scoreImageOffset = [{
     y: 54
 }];
 var medicineScore = 10;
+var lowestScore = 0;
+var deathCost = 50;
+
 var medicine_sound;
 var materials = [
     'images/mario_8_bit.png',
