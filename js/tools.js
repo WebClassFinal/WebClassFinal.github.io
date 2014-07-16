@@ -9,7 +9,7 @@ var init = function() {
     bg_sound.play();
 
     scene = sjs.Scene({
-//        autoPause: false
+        //        autoPause: false
         w: screen_w,
         h: screen_h
     });
@@ -20,15 +20,22 @@ var init = function() {
         $("<div></div>").attr("id", "startFace").css({
             "position": "absolute",
             "z-index": "10",
-            'left': "100px",
-            'top': '100px',
-            transform: "rotate(90deg)"
+            width: "100%",
+            height: "100%",
+            background: "#7AFFFF"
+            
+
         }).prependTo($("body"));
         var startButton = $("<button></botton>").addClass("start").text("开始游戏").css({
             "position": "absolute",
-            left: "10px",
-            top: "-50px",
-            width: "200px"
+            left: String(screen_w / 2 - 100) + "px",
+            top: String(screen_h / 2 - 100) + "px",
+            width: "200px",
+            height: "150px",
+            transform: "rotate(90deg)",
+            background: "#FCA8F5",
+            border: "none",
+            "font-size": "30px"
         });
         var helpButton = $("<button></botton>").addClass("help").text("帮助").css({
             "position": "absolute",
@@ -37,13 +44,13 @@ var init = function() {
             width: "200px"
         });
         startButton.prependTo($("#startFace"));
-        helpButton.prependTo($("#startFace"));
+/*        helpButton.prependTo($("#startFace"));*/
         startButton.click(start_game);
         startButton.tap(start_game);
     });
 };
 
-var start_game = function () {
+var start_game = function() {
     $("#startFace").remove();
 
     ticker = scene.Ticker(paint);
@@ -110,7 +117,8 @@ var paint = function() {
     // return to the top if Mario falls down or goes beyond the border
     if (crazy_mario.x + mario_image_size[1] < 0 || crazy_mario.y < 0) {
         decrease_score();
-        if(score <= lowestScore){
+        if (score <= lowestScore) {
+            ticker.pause();
             end_game();
         }
         restart();
@@ -138,15 +146,35 @@ var update_bee = function () {
     bee.toFront().update();
 };
 
-function decrease_score(){
-    score -= deathCost;
+function decrease_score() {
+    score = Math.floor(score / deathCostQuotient) - deathCost;
 }
-function end_game(){
-    scene.reset();
-    clearConfig();
-    init();
+
+function end_game() {
+    
+    $("<div></div>").attr("class", "gameEnd").css({
+        width: "100%",
+        height: "100%"
+    }).append($("<p>Game Over</p>").css({margin: 0, transform: "rotate(90deg)", left: String(screen_w / 2 - 100) + "px", top: String(screen_h / 2 - 30) + "px", position: "absolute", "z-index": 50, "font-size": "50px"})).prependTo($("body"));
+    var d = $("div.gameEnd");
+    setTimeout(function() {
+        d.removeClass("gameEnd");
+        d.addClass("gameEnd2");
+    }, 100);
+    d.click(function() {
+        scene.reset();
+        clearConfig();
+        $("body  div.sjs").remove();
+        $("body div.gameEnd").remove();
+        $("body div.gameEnd2").remove();
+        d.remove();
+    
+        init();
+    });
+
 }
-function clearConfig(){
+
+function clearConfig() {
     score = initialScore;
     tempScore = score;
     scoreShow = sjs.List();
@@ -263,8 +291,7 @@ var init_map = function() {
     current_progress += get_current_global_speed();
 };
 
-
-var draw_sky = function () {
+var draw_sky = function() {
     sky = scene.Sprite('images/sky.png');
     sky.scale(screen_w, screen_h);
     sky.position(screen_w / 2, screen_h / 2);
@@ -312,8 +339,8 @@ var extend_map = function() {
     map_count++;
 };
 
-var generate_clouds = function (height, length) {
-    for (var i = 0; i < Math.random() * 3 + 3; i ++) {
+var generate_clouds = function(height, length) {
+    for (var i = 0; i < Math.random() * 3 + 3; i++) {
         var cloud = scene.Sprite('images/cloud.png');
         var y = length * block_size[0] + Math.random() * length * block_size[0];
         var x = (height - Math.random() * 4 - 2) * block_size[1];
@@ -359,8 +386,8 @@ var update_medicines = function() {
     }
 };
 
-var update_clouds = function () {
-    for (var i = 0; i < clouds.length; i ++) {
+var update_clouds = function() {
+    for (var i = 0; i < clouds.length; i++) {
         var obj = clouds.list[i];
         // if block goes beyond the map, eliminate it
         if (obj.y < -cloud_image_size[0]) {
@@ -411,25 +438,32 @@ function update_scores() {
         var preScoreBase10 = tempScore.toString().split("").map(function(element) {
             return parseInt(element);
         });
-        
+
         var newScoreShow = sjs.List();
 
-        for (var i = 0; i < scoreBase10.length; i++) {console.log("dd");
+        for (var i = 0; i < scoreBase10.length; i++) {
             var scoresImage = scene.Sprite("images/numbers.png");
             var number = scoreBase10[i];
-            scoresImage.offset(scoreImageOffset[number].x,scoreImageOffset[number].y);
-            scoresImage.size(37, 54);
-            scoresImage.rotate(Math.PI / 2);           
-            scoresImage.position(screen_w - scoresImage.w - 40, screen_h - scoresImage.h + i * 40 - 40 * scoreBase10.length);
+            scoresImage.offset(scoreImageOffset[number].x, scoreImageOffset[number].y);
+            var xsize = 37;
+/*            if(number == 4 || number == 9){
+                xsize = 183 - scoreImageOffset[number].x;
+            }
+            else{
+                xsize = scoreImageOffset[number + 1].x - scoreImageOffset[number].x;
+            }*/
+            scoresImage.size(xsize, 54);
+            scoresImage.rotate(Math.PI / 2);
+            scoresImage.position(screen_w - scoresImage.h * 2, screen_h - scoresImage.w + i * 40 - 40 * scoreBase10.length);
 
             newScoreShow.add(scoresImage);
             scoresImage.update();
-            
+
         }
-        for(var i = 0 ; i < scoreShow.list.length ; i++){
+        for (var i = 0; i < scoreShow.list.length; i++) {
             scoreShow.list[i].remove();
         }
         scoreShow = newScoreShow;
         tempScore = score;
-    } 
+    }
 }
