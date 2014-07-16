@@ -2,6 +2,10 @@
  * Created by Travis on 2014/7/13.
  */
 // objects
+scene = sjs.Scene({
+        w: screen_w,
+        h: screen_h
+    });
 var body, crazy_mario, scene, ticker, mario_head;
 var blocks = sjs.List();
 var medicines = sjs.List();
