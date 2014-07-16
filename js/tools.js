@@ -51,6 +51,9 @@ var start_game = function () {
 
     // create mario and set movements
     crazy_mario = scene.Sprite('images/mario_8_bit.png');
+
+
+    init_map();
     crazy_mario.size(mario_image_size[0], mario_image_size[1] + mario_bottom_margin);
     crazy_mario.scale(mario_width / mario_image_size[0]);
     cycle.addSprite(crazy_mario);
@@ -59,13 +62,17 @@ var start_game = function () {
     // various transformations
     crazy_mario.position(screen_w, mario_init_y);
     crazy_mario.rotate(Math.PI / 2);
-    crazy_mario.update();
+    crazy_mario.toFront().update();
 
     mario_head = scene.Sprite('images/baozou/1.png');
-    mario_head.rotate(Math.PI / 2);
+    mario_head.rotate(Math.PI / 2).toFront();
+
+
+
     update_mario_head();
 
-    init_map();
+
+
     create_listeners();
     ticker.run();
 };
@@ -148,15 +155,23 @@ var get_current_shift = function() {
 
 // init map
 var init_map = function() {
+    draw_sky();
     draw_sun();
     extend_map();
     draw_map();
 };
 
+var draw_sky = function () {
+    sky = scene.Sprite('images/sky.png');
+    sky.scale(screen_w, screen_h);
+    sky.position(screen_w / 2, screen_h / 2);
+    sky.update();
+};
+
 var draw_sun = function () {
     sun = scene.Sprite('images/sun.png');
     sun.position(screen_w - 120, 40).rotate(Math.PI / 2).update();
-}
+};
 
 var extend_map = function() {
     map = generateMap({
