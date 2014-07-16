@@ -57,7 +57,7 @@ var start_game = function() {
     // define the walking movements of mario
     var positions = [];
     for (var i = 0; i < 20; i++) {
-        positions.push([i * 21 + 1, 13 + mario_bottom_margin, 5]);
+        positions.push([i * 21 + 1, 13 + mario_bottom_margin, 15]);
     }
     cycle = scene.Cycle(positions);
 
@@ -124,8 +124,10 @@ var paint = function() {
         restart();
     }
 
-    // update Mario's movements based on collision types;
     mario_movement_classify(crazy_mario, valuable_blocks(crazy_mario, blocks));
+
+    // update Mario's movements based on collision types;
+
     update_bee();
 
     eat_medicine();
