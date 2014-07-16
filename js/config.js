@@ -2,7 +2,7 @@
  * Created by Travis on 2014/7/13.
  */
 // objects
-var body, crazy_mario, scene, ticker, mario_head;
+var body, crazy_mario, scene, ticker, mario_head, sun;
 var blocks = sjs.List();
 var medicines = sjs.List();
 var clouds = sjs.List();
@@ -56,7 +56,8 @@ var materials = [
     'images/baozou/2.png',
     'images/baozou/3.png',
     'images/baozou/4.png',
-    'images/cloud.png'
+    'images/cloud.png',
+    'images/sun.png'
 ];
 
 // size

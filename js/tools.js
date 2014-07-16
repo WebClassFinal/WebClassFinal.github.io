@@ -148,9 +148,16 @@ var get_current_shift = function() {
 
 // init map
 var init_map = function() {
+    draw_sun();
     extend_map();
     draw_map();
 };
+
+var draw_sun = function () {
+    sun = scene.Sprite('images/sun.png');
+    sun.position(screen_w - 120, 40).rotate(Math.PI / 2).update();
+}
+
 var extend_map = function() {
     map = generateMap({
         height: map_height,
