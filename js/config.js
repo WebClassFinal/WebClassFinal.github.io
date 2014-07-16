@@ -94,8 +94,9 @@ var materials = [
 ];
 
 // size
-var screen_h = screen.height - 4;
-var screen_w = screen.width;
+var screen_h = $( window ).height() - 4;
+var screen_w = $( window ).width();
+//alert(screen_h + ": " + screen_w);
 var stone_img_size = [21, 21];
 var block_size = [21, 21]; // w, h
 var mario_image_size = [18, 36];
