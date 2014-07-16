@@ -196,7 +196,13 @@ var update_mario_head = function () {
         curr_shift = s;
         change_head_to(s);
     }
-    mario_head.position(crazy_mario.x + head_relative_shift[0] * mario_scale, crazy_mario.y + head_relative_shift[1]).update();
+    mario_head.position(crazy_mario.x + head_relative_shift[0] * mario_scale, crazy_mario.y + head_relative_shift[1]);
+    if (mario_head.angle < head_rotation_low) {
+        head_rotation_direction = 1;
+    } else if (mario_head.angle > head_rotation_up){
+        head_rotation_direction = -1;
+    }
+    mario_head.rotate(head_rotation_angular_speed * head_rotation_direction).update();
 };
 
 var change_head_to = function (shift) {

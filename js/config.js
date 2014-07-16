@@ -100,6 +100,12 @@ var head_relative_shift = [12, 3];
 var rush_boundary = 80;
 var rush_speed_ratio = 1.3;
 
+// movements
+var head_rotation_low = 0.5;
+var head_rotation_up = 2;
+var head_rotation_angular_speed = 0.08;
+var head_rotation_direction = 1;
+
 // time
 var rush_flag = false;
 var current_progress = 0;
