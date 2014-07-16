@@ -5,6 +5,7 @@ var init = function() {
     medicine_sound = document.getElementById("soundEfx");
 
     scene = sjs.Scene({
+//        autoPause: false
         w: screen_w,
         h: screen_h
     });
@@ -159,6 +160,7 @@ var init_map = function() {
     draw_sun();
     extend_map();
     draw_map();
+    current_progress -= get_current_global_speed();
 };
 
 var draw_sky = function () {
@@ -226,7 +228,7 @@ var draw_map = function() {
     update_blocks();
     update_medicines();
     update_clouds();
-    update_scores();
+//    update_scores();
 
     //    console.log(blocks.length + ": " + medicines.length);
 };
