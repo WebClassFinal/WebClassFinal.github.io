@@ -35,7 +35,7 @@ var map = {
 };
 
 // speed and distance
-var jump_speed = 8;
+var jump_speed = 6;
 var global_speed = 3;
 var speed_mutation_period = 400000;
 var speed_mutation_range = 0.3;

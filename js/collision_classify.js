@@ -89,7 +89,8 @@ var step_away_beneath = function (crazy_mario, list) {
     crazy_mario.move(-step_away, 0);
     var c = crazy_mario.collidesWithArray(list);
     crazy_mario.move(step_away, 0);
-    return c && !crazy_mario.collidesWithArray(list);
+    return c;
+//    return c && !crazy_mario.collidesWithArray(list);
 };
 
 var collision_type = function (crazy_mario, block) {
@@ -119,6 +120,7 @@ var update_mario_speed = function () {
     if (crazy_mario.xv > - max_falling_speed)
     {
         crazy_mario.xv -= gravity;
+        crazy_mario.applyXVelocity();
     }
 };
 
