@@ -105,10 +105,6 @@ var paint = function() {
 
     // return to the top if Mario falls down or goes beyond the border
     if (crazy_mario.x + mario_image_size[1] < 0 || crazy_mario.y < 0) {
-        decrease_score();
-        if(score <= lowestScore){
-            end_game();
-        }
         restart();
     }
 
@@ -306,7 +302,9 @@ var draw_map = function() {
     update_blocks();
     update_medicines();
     update_clouds();
-    update_scores();
+//    update_scores();
+
+    //    console.log(blocks.length + ": " + medicines.length);
 };
 
 var update_medicines = function() {
@@ -365,28 +363,19 @@ function update_scores() {
         var scoreBase10 = score.toString().split("").map(function(element) {
             return parseInt(element);
         });
-        var preScoreBase10 = tempScore.toString().split("").map(function(element) {
-            return parseInt(element);
-        });
-        
-        var newScoreShow = sjs.List();
 
-        for (var i = 0; i < scoreBase10.length; i++) {console.log("dd");
+        scoreShow = sjs.List();
+        for (var i = 0; i < scoreBase10.length; i++) {
             var scoresImage = scene.Sprite("images/numbers.png");
             var number = scoreBase10[i];
             scoresImage.offset(scoreImageOffset[number].x,scoreImageOffset[number].y);
             scoresImage.size(37, 54);
-            scoresImage.rotate(Math.PI / 2);           
-            scoresImage.position(screen_w - scoresImage.w - 40, screen_h - scoresImage.h + i * 40 - 40 * scoreBase10.length);
+            scoresImage.rotate(Math.PI / 2);
+            scoresImage.position(screen_w - scoresImage.w - 40, screen_h - scoresImage.h  - i * 40 - 40);
 
-            newScoreShow.add(scoresImage);
+            scoreShow.add(scoresImage);
             scoresImage.update();
-            
         }
-        for(var i = 0 ; i < scoreShow.list.length ; i++){
-            scoreShow.list[i].remove();
-        }
-        scoreShow = newScoreShow;
         tempScore = score;
-    } 
+    }
 }
