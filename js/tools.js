@@ -1,6 +1,8 @@
 /**
  * Created by Travis on 2014/7/12.
  */
+var timer = 0;
+var timerMachine;
 var init = function() {
     medicine_sound = document.getElementById("medicine");
     cry_sound = document.getElementById("cry");
@@ -59,6 +61,9 @@ var init = function() {
 };
 
 var start_game = function() {
+    timerMachine = setInterval(function(){
+        timer++;
+    }, 1000);
     $("#startFace").remove();
 
     ticker = scene.Ticker(paint);
@@ -128,6 +133,8 @@ var paint = function() {
         if (score <= lowestScore) {
             ticker.pause();
             end_game();
+            clearInterval(timerMachine);
+            timer = 0;
         }
         restart();
     }
@@ -175,6 +182,16 @@ function end_game() {
         "font-size": "50px",
         height: "100px",
         width: "400px"
+    })).append($("<p>Record: " + String(timer) + "s</p>").css({
+        margin: 0,
+        transform: "rotate(90deg)",
+        left: String(screen_w / 2 - 220) + "px",
+        top: String(screen_h / 2 + 30) + "px",
+        position: "absolute",
+        "z-index": 50,
+        "font-size": "40px",
+        height: "100px",
+        width: "400px"
     })).prependTo($("body"));
     var d = $("div.gameEnd");
     setTimeout(function() {
@@ -188,8 +205,10 @@ function end_game() {
         $("body div.gameEnd").remove();
         $("body div.gameEnd2").remove();
         d.remove();
+        
 
         init();
+
     });
 
 }
