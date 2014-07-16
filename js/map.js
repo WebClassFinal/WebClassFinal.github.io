@@ -6,18 +6,19 @@ function generateMap(size, preMap) {
     while (map.length < length) {
         map = connectMap(map, templateMap(height));
     }
+    length = map.length;
     //add medicine
     for (var i = 0; i < length; i++) {
         for (var j = 0; j < height; j++) {
             if (j > 0 && map.mapContent[i][j] == blank && map.mapContent[i][j - 1] == stone) {
                 //Medicine in the first layer is not very possible; second layer and third layer very possible
-                if (j == firstLayerPosition + 1 && Math.floor(Math.random() / medicineFactor * 5) == 0) {
+                if (j == firstLayerPosition + 1 && Math.floor(Math.random() / medicineFactor * 10) == 0) {
                     map.mapContent[i][j] = medicine;
                 }
                 if (j == secondLayerPosition + 1 && Math.floor(Math.random() / medicineFactor) == 0) {
                     map.mapContent[i][j] = medicine;
                 }
-                if (j == thirdLayerPosition + 1 && Math.floor(Math.random() / medicineFactor * 2) == 0) {
+                if (j == thirdLayerPosition + 1 && Math.floor(Math.random() / medicineFactor / 3) == 0) {
                     map.mapContent[i][j] = medicine;
                 }
             }
@@ -109,34 +110,46 @@ var map_template4 = {
 };
 var map_template5 = {
     length: 10,
-    firstLayer: [1, 1, 1, 1, 0, 1, 1, 0, 1, 1],
+    firstLayer: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     secondLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 };
 var map_template6 = {
     length: 10,
-    firstLayer: [1, 0, 1, 1, 1, 1, 1, 0, 1, 1],
+    firstLayer: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     secondLayer: [1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
     thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 };
 var map_template7 = {
     length: 10,
-    firstLayer: [1, 1, 1, 0, 0, 1, 1, 0, 1, 1],
+    firstLayer: [1, 1, 1, 0, 0, 0, 1, 1, 1, 1],
     secondLayer: [0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
     thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 };
 
 var map_template8 = {
-    length: 30,
-    firstLayer: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    secondLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    length: 43,
+    firstLayer: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+    secondLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
     thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 };
 var map_template9 = {
     length: 50,
     firstLayer: [1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    secondLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+    secondLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 };
-var map_template = [map_template1, map_template2, map_template3, map_template4, map_template5, map_template6, map_template7, map_template8, map_template9];
+var map_template10 = {
+    length: 30,
+    firstLayer: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    secondLayer: [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}
+var map_template11 = {
+    length: 40,
+    firstLayer: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+    secondLayer: [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}
+var map_template = [map_template1, map_template2, map_template3, map_template4/*, map_template5*/, map_template6, map_template7, map_template8, map_template9];
 
