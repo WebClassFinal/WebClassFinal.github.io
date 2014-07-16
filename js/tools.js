@@ -105,6 +105,10 @@ var paint = function() {
 
     // return to the top if Mario falls down or goes beyond the border
     if (crazy_mario.x + mario_image_size[1] < 0 || crazy_mario.y < 0) {
+        decrease_score();
+        if(score <= lowestScore){
+            end_game();
+        }
         restart();
     }
 
@@ -112,7 +116,81 @@ var paint = function() {
     mario_movement_classify(crazy_mario, valuable_blocks(crazy_mario, blocks));
     eat_medicine();
 };
+function decrease_score(){
+    score -= deathCost;
+}
+function end_game(){
+    scene.reset();
+    clearConfig();
+/*    $("<div></div>").attr("id", "gameEnd").css({width: screen_w, height: screen_h}).appendTo($("body"));*/
+/*    $("#gameEndtemp").attr("id", "gameEnd");*/
+    init();
+}
+function clearConfig(){
+    score = initialScore;
+    tempScore = score;
+    scoreShow = sjs.List();
+    medicines = sjs.List();
+    blocks = sjs.List();
+    medicine_collected = 0;
+    rush_flag = false;
+    current_progress = 0;
+    map_count = 0;
+    jump_speed = 8;
+    global_speed = 3;
+    speed_mutation_period = 400000;
+    speed_mutation_range = 0.3;
+    max_falling_speed = 15;
+    factor = 1.1; // step_away / falling speed
+    step_away = max_falling_speed * factor;
+    gravity = 0.3;
+    max_global_speed = 7;
+    curr_shift = 0;
+    shift_sum = 5;
+    shift_span = (max_global_speed - global_speed) / shift_sum;
+    map_buffer_size = map_growth;
+    border = 5;
+    neighbourhood_size = 50;
+    mario_init_y = 250;
+    head_relative_shift = [12, 3];
+    rush_boundary = 80;
+    rush_speed_ratio = 1.3;
+    jump_speed = 8;
+    global_speed = 3;
+    speed_mutation_period = 400000;
+    speed_mutation_range = 0.3;
+    max_falling_speed = 15;
+    factor = 1.1; // step_away / falling speed
+    step_away = max_falling_speed * factor;
+    gravity = 0.3;
+    max_global_speed = 7;
+    curr_shift = 0;
+    shift_sum = 5;
+    shift_span = (max_global_speed - global_speed) / shift_sum;
+    map_buffer_size = map_growth;
+    border = 5;
+    neighbourhood_size = 50;
+    mario_init_y = 250;
+    head_relative_shift = [12, 3];
+    rush_boundary = 80;
+    rush_speed_ratio = 1.3;
+    screen_h = screen.height - 4;
+    screen_w = screen.width;
+    stone_img_size = [21, 21];
+    block_size = [21, 21]; // w, h
+    mario_image_size = [18, 36];
+    mario_width = 21;
+    mario_bottom_margin = -1;
+    mario_scale = mario_width / mario_image_size[0];
+    map_height = Math.floor(screen_w / block_size[1]);
+    map_growth = Math.floor(screen_h / block_size[0]);
+    map = {
+        height: map_height,
+        length: 0,
+        mapContent: []
+    };
 
+}
 var valuable_blocks = function(crazy_mario, blocks) {
     var vb = [];
     var mx = crazy_mario.x,
@@ -290,19 +368,28 @@ function update_scores() {
         var scoreBase10 = score.toString().split("").map(function(element) {
             return parseInt(element);
         });
+        var preScoreBase10 = tempScore.toString().split("").map(function(element) {
+            return parseInt(element);
+        });
+        
+        var newScoreShow = sjs.List();
 
-        scoreShow = sjs.List();
-        for (var i = 0; i < scoreBase10.length; i++) {
+        for (var i = 0; i < scoreBase10.length; i++) {console.log("dd");
             var scoresImage = scene.Sprite("images/numbers.png");
             var number = scoreBase10[i];
             scoresImage.offset(scoreImageOffset[number].x,scoreImageOffset[number].y);
             scoresImage.size(37, 54);
-            scoresImage.rotate(Math.PI / 2);
-            scoresImage.position(screen_w - scoresImage.w - 40, screen_h - scoresImage.h  - i * 40 - 40);
+            scoresImage.rotate(Math.PI / 2);           
+            scoresImage.position(screen_w - scoresImage.w - 40, screen_h - scoresImage.h + i * 40 - 40 * scoreBase10.length);
 
-            scoreShow.add(scoresImage);
+            newScoreShow.add(scoresImage);
             scoresImage.update();
+            
         }
+        for(var i = 0 ; i < scoreShow.list.length ; i++){
+            scoreShow.list[i].remove();
+        }
+        scoreShow = newScoreShow;
         tempScore = score;
-    }
+    } 
 }
