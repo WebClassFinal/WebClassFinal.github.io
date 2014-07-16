@@ -19,9 +19,7 @@
 </head>
 
 <body>
-    <div id='sounds'>
-        <audio preload="auto" id="soundEfx" src="sounds/medicine.wav"></audio>
-    </div>
+
     <script type="text/javascript" src="./js/main.js"></script>
 </body>
 

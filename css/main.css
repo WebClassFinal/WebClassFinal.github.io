@@ -1,0 +1,14 @@
+div.gameEnd {
+    transition: opacity 1s ease-in-out;
+    position: absolute;
+    z-index: 20;
+/*     background: black; */
+    opacity: 0;
+}
+div.gameEnd2 {
+    transition: opacity 1s ease-in-out;
+    position: absolute;
+    z-index: 20;
+    background: black;
+    opacity: 0.8;
+}

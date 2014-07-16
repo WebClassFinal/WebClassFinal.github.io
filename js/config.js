@@ -10,6 +10,37 @@ var scoreShow = sjs.List();
 var initialScore = 100;
 var score = initialScore;
 var tempScore = score;
+/*var scoreImageOffset = [{
+    x: 0,
+    y: 0
+}, {
+    x: 40,
+    y: 0
+}, {
+    x: 70,
+    y: 0
+}, {
+    x: 111,
+    y: 0
+}, {
+    x: 145,
+    y: 0
+}, {
+    x: 0,
+    y: 54
+}, {
+    x: 40,
+    y: 54
+}, {
+    x: 72,
+    y: 54
+}, {
+    x: 105,
+    y: 54
+}, {
+    x: 143,
+    y: 54
+}];*/
 var scoreImageOffset = [{
     x: 0,
     y: 0
@@ -41,9 +72,10 @@ var scoreImageOffset = [{
     x: 148,
     y: 54
 }];
-var medicineScore = 10;
+var medicineScore = 100;
 var lowestScore = 0;
-var deathCost = 50;
+var deathCost = 20;
+var deathCostQuotient = 2;
 
 var medicine_sound;
 var materials = [
