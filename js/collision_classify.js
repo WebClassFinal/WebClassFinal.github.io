@@ -79,7 +79,9 @@ var eat_medicine = function () {
         m.remove();
         medicines.remove(m);
         medicine_collected ++;
+        score += medicineScore;
         eat_medicine_sound();
+        
 //        global_speed - medicine_efficacy;
     }
 };

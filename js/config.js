@@ -5,11 +5,48 @@
 var body, crazy_mario, scene, ticker, mario_head;
 var blocks = sjs.List();
 var medicines = sjs.List();
+var scoreShow = sjs.List();
+var initialScore = 100;
+var score = initialScore;
+var tempScore = score;
+var scoreImageOffset = [{
+    x: 0,
+    y: 0
+}, {
+    x: 37,
+    y: 0
+}, {
+    x: 74,
+    y: 0
+}, {
+    x: 111,
+    y: 0
+}, {
+    x: 148,
+    y: 0
+}, {
+    x: 0,
+    y: 54
+}, {
+    x: 37,
+    y: 54
+}, {
+    x: 74,
+    y: 54
+}, {
+    x: 111,
+    y: 54
+}, {
+    x: 148,
+    y: 54
+}];
+var medicineScore = 10;
 var medicine_sound;
 var materials = [
     'images/mario_8_bit.png',
     'images/stone.png',
     'images/medicine.png',
+    'images/numbers.png',
     'images/baozou/0.png',
     'images/baozou/1.png',
     'images/baozou/2.png',
@@ -20,9 +57,9 @@ var materials = [
 // size
 var screen_h = screen.height - 4;
 var screen_w = screen.width;
-var stone_img_size = [21,21];
-var block_size = [21,21]; // w, h
-var mario_image_size = [18,36];
+var stone_img_size = [21, 21];
+var block_size = [21, 21]; // w, h
+var mario_image_size = [18, 36];
 var mario_width = 21;
 var mario_bottom_margin = -1;
 var mario_scale = mario_width / mario_image_size[0];
