@@ -139,6 +139,10 @@ var bee_stun_countdown = 100;
 var bee_yv = 1.5;
 var sun_original_angle;
 
+// positions
+var sun_x = screen_w - 120;
+var sun_y = 40;
+
 // movements
 var head_rotation_low = 1;
 var head_rotation_up = 2;

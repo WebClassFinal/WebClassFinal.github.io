@@ -307,7 +307,7 @@ var draw_bee = function () {
 
 var draw_sun = function () {
     sun = scene.Sprite('images/sun.png');
-    sun.position(screen_w - 120, 40).rotate(Math.PI / 2).update();
+    sun.position(sun_x, sun_y).rotate(Math.PI / 2).update();
     sun_original_angle = sun.angle;
 };
 
@@ -424,12 +424,13 @@ var update_blocks = function() {
 
 var update_sun = function () {
     if (rush_flag) {
-        sun.rotate(head_rotation_angular_speed * (get_current_shift() + 1) * head_rotation_direction).update();
+        sun.rotate(head_rotation_angular_speed * (get_current_shift() + 1) * head_rotation_direction);
     } else {
         if (sun.angle != sun_original_angle) {
-            sun.rotate(-sun.angle +sun_original_angle).update();
+            sun.rotate(-sun.angle +sun_original_angle);
         }
     }
+    sun.position(sun_x, sun_y + 5 * Math.cos(ticker.currentTick / 20)).update();
 };
 
 function update_scores() {
