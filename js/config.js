@@ -78,13 +78,13 @@ var map = {
 };
 
 // speed and distance
-var jump_speed = 6;
+var jump_speed = 8;
 var global_speed = 3;
 var speed_mutation_period = 400000;
 var speed_mutation_range = 0.3;
 var max_falling_speed = 15;
 var factor = 1.1; // step_away / falling speed
-var step_away = max_falling_speed * factor;
+var step_away = Math.max(max_falling_speed * factor, 25);
 var gravity = 0.3;
 var max_global_speed = 7;
 var curr_shift = 0;

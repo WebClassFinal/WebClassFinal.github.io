@@ -53,7 +53,7 @@ var jump_collision_classify = function (crazy_mario, list) {
     console.log("jump");
     var cb = crazy_mario.collidesWithArray(list);
     if (!cb) {
-        if (crazy_mario.xv < 0 && step_away_beneath(crazy_mario, list)) {
+        if (crazy_mario.xv <= 0 && step_away_beneath(crazy_mario, list)) {
             crazy_mario.xv = jump_speed;
             crazy_mario.applyXVelocity();
         }
@@ -82,8 +82,13 @@ var eat_medicine = function () {
         medicine_collected ++;
         score += medicineScore;
         eat_medicine_sound();
-        
-//        global_speed - medicine_efficacy;
+    }
+};
+
+var update_mario_speed = function () {
+    if (crazy_mario.xv > - max_falling_speed)
+    {
+        crazy_mario.xv -= gravity;
     }
 };
 

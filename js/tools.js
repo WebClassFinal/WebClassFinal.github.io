@@ -33,38 +33,41 @@ var init = function() {
         });
         startButton.prependTo($("#startFace"));
         helpButton.prependTo($("#startFace"));
-        startButton.click(function() {
-            $("#startFace").remove();
-
-            ticker = scene.Ticker(paint);
-            // define the walking movements of mario
-            var positions = [];
-            for (var i = 0; i < 20; i++) {
-                positions.push([i * 21 + 1, 13 + mario_bottom_margin, 5]);
-            }
-            cycle = scene.Cycle(positions);
-
-            // create mario and set movements
-            crazy_mario = scene.Sprite('images/mario_8_bit.png');
-            crazy_mario.size(mario_image_size[0], mario_image_size[1] + mario_bottom_margin);
-            crazy_mario.scale(mario_width / mario_image_size[0]);
-            cycle.addSprite(crazy_mario);
-            cycle.update();
-
-            // various transformations
-            crazy_mario.position(screen_w, mario_init_y);
-            crazy_mario.rotate(Math.PI / 2);
-            crazy_mario.update();
-
-            mario_head = scene.Sprite('images/baozou/1.png');
-            mario_head.rotate(Math.PI / 2);
-            update_mario_head();
-
-            init_map();
-            create_listeners();
-            ticker.run();
-        });
+        startButton.click(start_game);
+        startButton.tap(start_game);
     });
+};
+
+var start_game = function () {
+    $("#startFace").remove();
+
+    ticker = scene.Ticker(paint);
+    // define the walking movements of mario
+    var positions = [];
+    for (var i = 0; i < 20; i++) {
+        positions.push([i * 21 + 1, 13 + mario_bottom_margin, 5]);
+    }
+    cycle = scene.Cycle(positions);
+
+    // create mario and set movements
+    crazy_mario = scene.Sprite('images/mario_8_bit.png');
+    crazy_mario.size(mario_image_size[0], mario_image_size[1] + mario_bottom_margin);
+    crazy_mario.scale(mario_width / mario_image_size[0]);
+    cycle.addSprite(crazy_mario);
+    cycle.update();
+
+    // various transformations
+    crazy_mario.position(screen_w, mario_init_y);
+    crazy_mario.rotate(Math.PI / 2);
+    crazy_mario.update();
+
+    mario_head = scene.Sprite('images/baozou/1.png');
+    mario_head.rotate(Math.PI / 2);
+    update_mario_head();
+
+    init_map();
+    create_listeners();
+    ticker.run();
 };
 
 var create_listeners = function() {
