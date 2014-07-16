@@ -6,10 +6,6 @@ function generateMap(size, preMap) {
     while (map.length < length) {
         map = connectMap(map, templateMap(height));
     }
-    if (map.length > length) {
-        map.length = length;
-        map.mapContent = map.mapContent.slice(0, length);
-    }
     //add medicine
     for (var i = 0; i < length; i++) {
         for (var j = 0; j < height; j++) {
@@ -66,8 +62,6 @@ function templateMap(height, templateNum) {
     if (typeof arguments[1] != "undefined") {
         randomIndex = templateNum;
     }
-    console.log("oo");
-    console.log(randomIndex);
     var template = map_template[randomIndex];
     var map = initializeMap(height, template.length);
     for (var i = 0; i < map.length; i++) {
@@ -145,3 +139,4 @@ var map_template9 = {
     thirdLayer: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
 };
 var map_template = [map_template1, map_template2, map_template3, map_template4, map_template5, map_template6, map_template7, map_template8, map_template9];
+
