@@ -5,6 +5,7 @@
 var body, crazy_mario, scene, ticker, mario_head;
 var blocks = sjs.List();
 var medicines = sjs.List();
+var clouds = sjs.List();
 var scoreShow = sjs.List();
 var initialScore = 100;
 var score = initialScore;
@@ -51,7 +52,8 @@ var materials = [
     'images/baozou/1.png',
     'images/baozou/2.png',
     'images/baozou/3.png',
-    'images/baozou/4.png'
+    'images/baozou/4.png',
+    'images/cloud.png'
 ];
 
 // size
@@ -60,6 +62,7 @@ var screen_w = screen.width;
 var stone_img_size = [21, 21];
 var block_size = [21, 21]; // w, h
 var mario_image_size = [18, 36];
+var cloud_image_size = [64, 48];
 var mario_width = 21;
 var mario_bottom_margin = -1;
 var mario_scale = mario_width / mario_image_size[0];
