@@ -127,6 +127,7 @@ var collision_type = function (crazy_mario, block) {
 var mario_rampage = function () {
     crazy_mario.xv = jump_speed * 0.5;
     crazy_mario.applyXVelocity();
+    mario_cry_sound();
 };
 
 var mario_movement_classify = function (crazy_mario, list) {
@@ -210,4 +211,4 @@ var update_mario_head = function () {
 
 var change_head_to = function (shift) {
     mario_head.loadImg('images/baozou/' + shift + '.png', true).update();
-}
+};

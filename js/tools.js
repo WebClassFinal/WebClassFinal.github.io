@@ -2,9 +2,11 @@
  * Created by Travis on 2014/7/12.
  */
 var init = function() {
-    // $(body).append('<audio preload="auto" id="soundEfx" src="sounds/medicine.wav"></audio>');
-    // debugger;
-    medicine_sound = document.getElementById("soundEfx");
+    medicine_sound = document.getElementById("medicine");
+    cry_sound = document.getElementById("cry");
+//    cry_sound.play();
+    bg_sound = document.getElementById("bgsound");
+    bg_sound.play();
 
     scene = sjs.Scene({
         //        autoPause: false
@@ -63,7 +65,7 @@ var start_game = function() {
     // define the walking movements of mario
     var positions = [];
     for (var i = 0; i < 20; i++) {
-        positions.push([i * 21 + 1, 13 + mario_bottom_margin, 5]);
+        positions.push([i * 21 + 1, 13 + mario_bottom_margin, 15]);
     }
     cycle = scene.Cycle(positions);
 
@@ -130,9 +132,28 @@ var paint = function() {
         restart();
     }
 
-    // update Mario's movements based on collision types;
     mario_movement_classify(crazy_mario, valuable_blocks(crazy_mario, blocks));
+
+    // update Mario's movements based on collision types;
+
+    update_bee();
+
     eat_medicine();
+};
+
+var update_bee = function () {
+//    bee.x = crazy_mario.x;
+//    var x = crazy_mario.x + bee_movement_radius * Math.sin(ticker.currentTick / 10);
+//    bee.position(Math.min(x, screen_w - bee_image_size[1]), bee_position);
+    var x = crazy_mario.x - crazy_mario.xv + bee_movement_radius * Math.sin(ticker.currentTick / 10);
+    bee.position(Math.min(x, screen_w - bee_image_size[1]), bee.y);
+    if (bee_stun_countdown) {
+        bee_stun_countdown --;
+        bee.yv = bee_stun_countdown ? bee_yv : 0;
+        bee.applyYVelocity();
+    }
+    bee.applyXVelocity();
+    bee.toFront().update();
 };
 
 function decrease_score() {
@@ -284,6 +305,7 @@ var get_current_shift = function() {
 var init_map = function() {
     draw_sky();
     draw_sun();
+    draw_bee();
     extend_map();
     draw_map();
     current_progress += get_current_global_speed();
@@ -296,9 +318,15 @@ var draw_sky = function() {
     sky.update();
 };
 
-var draw_sun = function() {
+var draw_bee = function () {
+    bee = scene.Sprite('images/bee.png');
+    bee.position(crazy_mario.x, bee_position - bee_stun_countdown * bee_yv).rotate(Math.PI / 2).toFront().update();
+};
+
+var draw_sun = function () {
     sun = scene.Sprite('images/sun.png');
-    sun.position(screen_w - 120, 40).rotate(Math.PI / 2).update();
+    sun.position(sun_x, sun_y).rotate(Math.PI / 2).update();
+    sun_original_angle = sun.angle;
 };
 
 var extend_map = function() {
@@ -317,9 +345,10 @@ var extend_map = function() {
                 block = scene.Sprite('images/stone.png');
             } else if (2 == type) {
                 block = scene.Sprite('images/medicine.png');
+                block.rotate(Math.PI / 2);
             }
             block.position(j * block_size[1], (i + map_count * map_growth) * block_size[0] - current_progress);
-            //            block.scale(block_size[0] / stone_img_size[0]);
+
             if (1 == type) {
                 blocks.add(block);
             } else {
@@ -353,6 +382,7 @@ var draw_map = function() {
     }
     update_blocks();
     update_medicines();
+    update_sun();
     update_clouds();
     update_scores();
 
@@ -408,6 +438,17 @@ var update_blocks = function() {
             obj.update();
         }
     }
+};
+
+var update_sun = function () {
+    if (rush_flag) {
+        sun.rotate(head_rotation_angular_speed * (get_current_shift() + 1) * head_rotation_direction);
+    } else {
+        if (sun.angle != sun_original_angle) {
+            sun.rotate(-sun.angle +sun_original_angle);
+        }
+    }
+    sun.position(sun_x, sun_y + 5 * Math.cos(ticker.currentTick / 20)).update();
 };
 
 function update_scores() {

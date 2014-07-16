@@ -19,8 +19,13 @@
 </head>
 
 <body>
-    <div id='sounds'>
-        <audio preload="auto" id="soundEfx" src="sounds/medicine.wav"></audio>
+    <div id="sounds">
+        <audio preload loop autoplay id="bgsound">
+            <source src="sounds/mario.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio preload="auto" id="medicine" src="sounds/medicine.wav"></audio>
+        <audio preload="auto" id="cry" src="sounds/medicine.wav"></audio>
     </div>
     <script type="text/javascript" src="./js/main.js"></script>
 </body>
