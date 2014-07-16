@@ -2,7 +2,7 @@ div.gameEnd {
     transition: opacity 1s ease-in-out;
     position: absolute;
     z-index: 20;
-/*     background: black; */
+     background: black; 
     opacity: 0;
 }
 div.gameEnd2 {

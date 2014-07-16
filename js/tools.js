@@ -20,18 +20,18 @@ var init = function() {
             "z-index": "10",
             width: "100%",
             height: "100%",
-            background: "#7AFFFF"
-            
+            background: "#2EC3E9"
+
 
         }).prependTo($("body"));
         var startButton = $("<button></botton>").addClass("start").text("开始游戏").css({
             "position": "absolute",
             left: String(screen_w / 2 - 100) + "px",
-            top: String(screen_h / 2 - 100) + "px",
+            top: String(screen_h / 2 + 50) + "px",
             width: "200px",
-            height: "150px",
+            height: "200px",
             transform: "rotate(90deg)",
-            background: "#FCA8F5",
+            background: "radial-gradient(#F867FB, #2EC3E9 100px)",
             border: "none",
             "font-size": "30px"
         });
@@ -42,7 +42,15 @@ var init = function() {
             width: "200px"
         });
         startButton.prependTo($("#startFace"));
-/*        helpButton.prependTo($("#startFace"));*/
+        /*        helpButton.prependTo($("#startFace"));*/
+        $("<img/>").attr("src", "images/start.png").css({
+            position: "absolute",
+            height: String(screen_w - 30) + "px",
+            width: "auto",
+            left: "40px",
+            transform: "rotate(90deg)",
+            "z-index": 40
+        }).appendTo($("#startFace"));
         startButton.click(start_game);
         startButton.tap(start_game);
     });
@@ -132,11 +140,21 @@ function decrease_score() {
 }
 
 function end_game() {
-    
+
     $("<div></div>").attr("class", "gameEnd").css({
         width: "100%",
         height: "100%"
-    }).append($("<p>Game Over</p>").css({margin: 0, transform: "rotate(90deg)", left: String(screen_w / 2 - 100) + "px", top: String(screen_h / 2 - 30) + "px", position: "absolute", "z-index": 50, "font-size": "50px"})).prependTo($("body"));
+    }).append($("<p>Game Over</p>").css({
+        margin: 0,
+        transform: "rotate(90deg)",
+        left: String(screen_w / 2 - 160) + "px",
+        top: String(screen_h / 2 + 30) + "px",
+        position: "absolute",
+        "z-index": 50,
+        "font-size": "50px",
+        height: "100px",
+        width: "400px"
+    })).prependTo($("body"));
     var d = $("div.gameEnd");
     setTimeout(function() {
         d.removeClass("gameEnd");
@@ -149,7 +167,7 @@ function end_game() {
         $("body div.gameEnd").remove();
         $("body div.gameEnd2").remove();
         d.remove();
-    
+
         init();
     });
 
@@ -408,12 +426,6 @@ function update_scores() {
             var number = scoreBase10[i];
             scoresImage.offset(scoreImageOffset[number].x, scoreImageOffset[number].y);
             var xsize = 37;
-/*            if(number == 4 || number == 9){
-                xsize = 183 - scoreImageOffset[number].x;
-            }
-            else{
-                xsize = scoreImageOffset[number + 1].x - scoreImageOffset[number].x;
-            }*/
             scoresImage.size(xsize, 54);
             scoresImage.rotate(Math.PI / 2);
             scoresImage.position(screen_w - scoresImage.h * 2, screen_h - scoresImage.w + i * 40 - 40 * scoreBase10.length);

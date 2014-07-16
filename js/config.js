@@ -72,8 +72,8 @@ var scoreImageOffset = [{
     x: 148,
     y: 54
 }];
-var medicineScore = 100;
-var lowestScore = 0;
+var medicineScore = 10;
+var lowestScore = 1;
 var deathCost = 20;
 var deathCostQuotient = 2;
 
