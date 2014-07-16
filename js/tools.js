@@ -87,7 +87,6 @@ var start_game = function() {
     mario_head = scene.Sprite('images/baozou/1.png');
     mario_head.rotate(Math.PI / 2).toFront();
 
-
     update_mario_head();
 
     create_listeners();
@@ -242,8 +241,9 @@ function clearConfig() {
     head_relative_shift = [12, 3];
     rush_boundary = 80;
     rush_speed_ratio = 1.3;
-    screen_h = screen.height - 4;
-    screen_w = screen.width;
+
+    screen_h = $( window ).height() - 4;
+    screen_w = $( window ).width();
     stone_img_size = [21, 21];
     block_size = [21, 21]; // w, h
     mario_image_size = [18, 36];
