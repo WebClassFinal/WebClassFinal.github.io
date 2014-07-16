@@ -11,7 +11,7 @@ var init = function() {
 
     // load the IMAGES in parallel. When all the IMAGES are
     // ready, the callback function is called.
-    scene.loadImages(materials, function() {
+    scene.loadImages(materials, function() {console.log("map");
         $("<div></div>").attr("id", "startFace").css({
             "position": "absolute",
             "z-index": "10",
@@ -36,7 +36,7 @@ var init = function() {
         startButton.click(function() {
             $("#startFace").remove();
 
-            ticker = scene.Ticker(paint);
+            ticker = scene.Ticker(paint);console.log("cycle");
             // define the walking movements of mario
             var positions = [];
             for (var i = 0; i < 20; i++) {
@@ -61,7 +61,7 @@ var init = function() {
             update_mario_head();
 
             init_map();
-            create_listeners();
+            create_listeners();console.log("cycle");
             ticker.run();
         });
     });
@@ -94,6 +94,10 @@ var paint = function() {
 
     // return to the top if Mario falls down or goes beyond the border
     if (crazy_mario.x + mario_image_size[1] < 0 || crazy_mario.y < 0) {
+        decrease_score();
+        if(score < lowestScore){
+            end_game();
+        }
         restart();
     }
 
@@ -102,6 +106,25 @@ var paint = function() {
     eat_medicine();
 };
 
+function decrease_score(){
+    score -= deathCost;
+}
+function end_game(){
+    scene.reset();console.log("aaa");
+    clearConfig();
+    init();
+}
+function clearConfig(){
+    score = initialScore;
+    tempScore = score;
+    scoreShow = sjs.List();
+    medicines = sjs.List();
+    blocks = sjs.List();
+    medicine_collected = 0;
+    rush_flag = false;
+    current_progress = 0;
+    map_count = 0;
+}
 var valuable_blocks = function(crazy_mario, blocks) {
     var vb = [];
     var mx = crazy_mario.x,
@@ -230,7 +253,9 @@ function update_scores() {
         var scoreBase10 = score.toString().split("").map(function(element) {
             return parseInt(element);
         });
-
+        for(var i = 0 ; i < scoreShow.list.length ; i++){
+            scoreShow.list[i].remove();
+        }
         scoreShow = sjs.List();
         for (var i = 0; i < scoreBase10.length; i++) {
             var scoresImage = scene.Sprite("images/numbers.png");
