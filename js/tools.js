@@ -180,14 +180,30 @@ var extend_map = function() {
     map_count++;
 };
 
+var generate_clouds = function (height, length) {
+    for (var i = 0; i < Math.random() * 3 + 3; i ++) {
+        var cloud = scene.Sprite('images/cloud.png');
+        var y = length * block_size[0] + Math.random() * length * block_size[0];
+        var x = (height - Math.random() * 4 - 2) * block_size[1];
+        cloud.position(x, y);
+        cloud.rotate(Math.PI / 2).update();
+        clouds.add(cloud);
+    }
+};
+
 var draw_map = function() {
     // if map end is nigh, extend the original map
     //    console.log("map length: " + map.length + "; progress: " + current_progress + "; buffer " + map_buffer_size);
     if (map_count * map_growth < current_progress / block_size[0] + map_buffer_size) {
         extend_map();
     }
+
+    if (clouds.length == 0 || clouds.list[clouds.length - 1].y < screen_h / 2) {
+        generate_clouds(map_height, map_growth);
+    }
     update_blocks();
     update_medicines();
+    update_clouds();
     update_scores();
 
     //    console.log(blocks.length + ": " + medicines.length);
@@ -208,7 +224,23 @@ var update_medicines = function() {
             obj.update();
         }
     }
-}
+};
+
+var update_clouds = function () {
+    for (var i = 0; i < clouds.length; i ++) {
+        var obj = clouds.list[i];
+        // if block goes beyond the map, eliminate it
+        if (obj.y < -cloud_image_size[0]) {
+            obj.remove();
+            clouds.remove(obj);
+            i--;
+        } else {
+            obj.yv = -get_current_global_speed();
+            obj.applyYVelocity();
+            obj.update();
+        }
+    }
+};
 
 var update_blocks = function() {
 
@@ -240,7 +272,7 @@ function update_scores() {
             var number = scoreBase10[i];
             scoresImage.offset(scoreImageOffset[number].x,scoreImageOffset[number].y);
             scoresImage.size(37, 54);
-            scoresImage.rotate(Math.PI / 2);           
+            scoresImage.rotate(Math.PI / 2);
             scoresImage.position(screen_w - scoresImage.w - 40, screen_h - scoresImage.h  - i * 40 - 40);
 
             scoreShow.add(scoresImage);

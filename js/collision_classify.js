@@ -50,7 +50,6 @@ var super_collision_detection = function (crazy_mario, list) {
 };
 
 var jump_collision_classify = function (crazy_mario, list) {
-    console.log("jump");
     var cb = crazy_mario.collidesWithArray(list);
     if (!cb) {
         if (crazy_mario.xv <= 0 && step_away_beneath(crazy_mario, list)) {
