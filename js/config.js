@@ -2,7 +2,7 @@
  * Created by Travis on 2014/7/13.
  */
 // objects
-var body, crazy_mario, scene, ticker, mario_head, sun, sky;
+var body, crazy_mario, scene, ticker, mario_head, sun, sky, bee;
 var blocks = sjs.List();
 var medicines = sjs.List();
 var clouds = sjs.List();
@@ -45,7 +45,6 @@ var medicineScore = 10;
 var lowestScore = 0;
 var deathCost = 50;
 
-var medicine_sound;
 var materials = [
     'images/mario_8_bit.png',
     'images/stone.png',
@@ -58,7 +57,8 @@ var materials = [
     'images/baozou/4.png',
     'images/cloud.png',
     'images/sun.png',
-    'images/sky.png'
+    'images/sky.png',
+    'images/bee.png'
 ];
 
 // size
@@ -80,9 +80,10 @@ var map = {
 };
 
 // speed and distance
+var relative_shift = 100;
 var jump_speed = 8;
 var global_speed = 3;
-var speed_mutation_period = 400000;
+var speed_mutation_period = 400;
 var speed_mutation_range = 0.3;
 var max_falling_speed = 15;
 var factor = 1.1; // step_away / falling speed
@@ -94,11 +95,17 @@ var shift_sum = 5;
 var shift_span = (max_global_speed - global_speed) / shift_sum;
 var map_buffer_size = map_growth;
 var border = 3;
-var neighbourhood_size = 50;
-var mario_init_y = 250;
+var neighbourhood_size = 50 + relative_shift;
+var mario_init_y = 250 + relative_shift;
 var head_relative_shift = [12, 3];
-var rush_boundary = 80;
+var rush_boundary = 80 + relative_shift;
+var bee_image_size = [51,59];
+var bee_position = rush_boundary - bee_image_size[0];
+var bee_movement_radius = 5;
 var rush_speed_ratio = 1.3;
+var bee_stun_countdown = 100;
+var bee_yv = 1.5;
+var sun_original_angle;
 
 // movements
 var head_rotation_low = 1;
@@ -114,3 +121,9 @@ var map_count = 0;
 // stats
 var medicine_collected = 0;
 var medicine_efficacy = 0.7;
+
+// sounds
+var medicine_sound;
+var cry_sound;
+//var is_crying = false;
+var bg_sound;
