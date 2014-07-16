@@ -50,6 +50,7 @@ var super_collision_detection = function (crazy_mario, list) {
 };
 
 var jump_collision_classify = function (crazy_mario, list) {
+    console.log("jump");
     var cb = crazy_mario.collidesWithArray(list);
     if (!cb) {
         if (crazy_mario.xv < 0 && step_away_beneath(crazy_mario, list)) {
@@ -118,12 +119,10 @@ var collision_type = function (crazy_mario, block) {
         }
     }
 };
-var update_mario_speed = function () {
-    if (crazy_mario.xv > - max_falling_speed)
-    {
-        crazy_mario.xv -= gravity;
-        crazy_mario.applyXVelocity();
-    }
+
+var mario_rampage = function () {
+    crazy_mario.xv = jump_speed * 1.2;
+    crazy_mario.applyXVelocity();
 };
 
 var mario_movement_classify = function (crazy_mario, list) {

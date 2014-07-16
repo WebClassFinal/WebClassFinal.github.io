@@ -69,7 +69,7 @@ var init = function() {
 
 var create_listeners = function() {
     body = $('body');
-    body.touchstart(function() {
+    body.mousedown(function() {
         jump_collision_classify(crazy_mario, blocks.list);
     });
 };
@@ -205,7 +205,7 @@ var update_medicines = function() {
             obj.update();
         }
     }
-}
+};
 
 var update_blocks = function() {
 
@@ -222,6 +222,14 @@ var update_blocks = function() {
             obj.applyYVelocity();
             obj.update();
         }
+    }
+};
+
+var update_mario_speed = function () {
+    if (crazy_mario.xv > - max_falling_speed)
+    {
+        crazy_mario.xv -= gravity;
+        crazy_mario.applyXVelocity();
     }
 };
 
