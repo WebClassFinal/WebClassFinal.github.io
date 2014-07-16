@@ -134,6 +134,7 @@ var get_current_global_speed = function() {
         rush_flag = true;
         //        console.log("rush flag to true: " + crazy_mario.y);
         s = max_global_speed;
+        mario_rampage();
     } else {
         if (crazy_mario.y < mario_init_y && rush_flag) {
             s = max_global_speed;
@@ -160,7 +161,7 @@ var init_map = function() {
     draw_sun();
     extend_map();
     draw_map();
-    current_progress -= get_current_global_speed();
+    current_progress += get_current_global_speed();
 };
 
 var draw_sky = function () {
@@ -228,7 +229,7 @@ var draw_map = function() {
     update_blocks();
     update_medicines();
     update_clouds();
-//    update_scores();
+    update_scores();
 
     //    console.log(blocks.length + ": " + medicines.length);
 };

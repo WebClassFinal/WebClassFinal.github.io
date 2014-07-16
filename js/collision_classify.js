@@ -125,11 +125,14 @@ var collision_type = function (crazy_mario, block) {
 };
 
 var mario_rampage = function () {
-    crazy_mario.xv = jump_speed * 1.2;
+    crazy_mario.xv = jump_speed * 0.5;
     crazy_mario.applyXVelocity();
 };
 
 var mario_movement_classify = function (crazy_mario, list) {
+    for (var i = 0; i < list.length; i ++) {
+        list[i].toFront();
+    }
     var cb = crazy_mario.collidesWithArray(list);
     if (!cb) {
         var xv = crazy_mario.xv, yv = get_current_global_speed() * (rush_flag ? rush_speed_ratio : 1);
@@ -202,7 +205,7 @@ var update_mario_head = function () {
     } else if (mario_head.angle > head_rotation_up){
         head_rotation_direction = -1;
     }
-    mario_head.rotate(head_rotation_angular_speed * head_rotation_direction).update();
+    mario_head.rotate(head_rotation_angular_speed * (get_current_shift() + 1) * head_rotation_direction).update();
 };
 
 var change_head_to = function (shift) {

@@ -93,7 +93,7 @@ var curr_shift = 0;
 var shift_sum = 5;
 var shift_span = (max_global_speed - global_speed) / shift_sum;
 var map_buffer_size = map_growth;
-var border = 5;
+var border = 3;
 var neighbourhood_size = 50;
 var mario_init_y = 250;
 var head_relative_shift = [12, 3];
@@ -101,9 +101,9 @@ var rush_boundary = 80;
 var rush_speed_ratio = 1.3;
 
 // movements
-var head_rotation_low = 0.5;
+var head_rotation_low = 1;
 var head_rotation_up = 2;
-var head_rotation_angular_speed = 0.08;
+var head_rotation_angular_speed = 0.02;
 var head_rotation_direction = 1;
 
 // time
