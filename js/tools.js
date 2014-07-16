@@ -88,10 +88,7 @@ var start_game = function() {
     mario_head.rotate(Math.PI / 2).toFront();
 
 
-
     update_mario_head();
-
-
 
     create_listeners();
     ticker.run();
@@ -100,6 +97,9 @@ var start_game = function() {
 var create_listeners = function() {
     body = $('body');
     body.touchstart(function() {
+        jump_collision_classify(crazy_mario, blocks.list);
+    });
+    body.mousedown(function() {
         jump_collision_classify(crazy_mario, blocks.list);
     });
 };
